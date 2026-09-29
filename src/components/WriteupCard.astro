@@ -1,0 +1,51 @@
+---
+import FallbackBadge from './FallbackBadge.astro';
+import { formatDate, useTranslations, type Locale } from '@/i18n';
+import { filterKey, type WriteupItem } from '@/lib/content';
+import { pagePath } from '@/lib/urls';
+
+interface Props {
+  item: WriteupItem;
+  lang: Locale;
+}
+
+const { item, lang } = Astro.props;
+const t = useTranslations(lang);
+const { data } = item.entry;
+---
+
+<li
+  data-filter-item
+  data-platform={filterKey(data.platform)}
+  data-difficulty={data.difficulty}
+  data-tag={data.tags.map(filterKey).join(' ')}
+>
+  <article class="card" lang={item.contentLang}>
+    <div class="card-meta mono" lang={lang}>
+      <span>{data.platform}</span>
+      <span aria-hidden="true">·</span>
+      <span class="difficulty" data-difficulty={data.difficulty}>{t.writeups.difficulty[data.difficulty]}</span>
+      <span aria-hidden="true">·</span>
+      <span>{data.os}</span>
+      {item.isFallback && <FallbackBadge lang={lang} contentLang={item.contentLang} />}
+    </div>
+    <h3><a href={pagePath(lang, `writeups/${item.slug}`)}>{data.name}</a></h3>
+    <p>{data.summary}</p>
+    <div class="card-footer">
+      {data.tags.map((tag) => <span class="tag">{tag}</span>)}
+      <time class="date mono" datetime={data.date.toISOString()}>{formatDate(data.date, lang)}</time>
+    </div>
+  </article>
+</li>
+
+<style>
+  .difficulty {
+    color: var(--text-muted);
+  }
+
+  .date {
+    margin-left: auto;
+    font-size: var(--text-xs);
+    color: var(--text-subtle);
+  }
+</style>

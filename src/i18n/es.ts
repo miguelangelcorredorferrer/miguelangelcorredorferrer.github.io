@@ -74,6 +74,7 @@ export const es = {
     os: 'Sistema',
     platform: 'Plataforma',
     difficultyLabel: 'Dificultad',
+    readingLabel: 'Lectura',
     readingTime: (min: number) => `${min} min de lectura`,
     toc: 'En esta página',
     copy: 'Copiar',

@@ -1,0 +1,96 @@
+---
+import { useTranslations, type Locale } from '@/i18n';
+
+export interface FilterDef {
+  /** Clave del data-atributo de los elementos (data-<key>). */
+  key: string;
+  label: string;
+  options: { value: string; label: string }[];
+}
+
+interface Props {
+  lang: Locale;
+  /** id de la lista a filtrar. */
+  target: string;
+  filters: FilterDef[];
+}
+
+const { lang, target, filters } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<!-- Oculto sin JS: en ese caso se muestran todos los elementos. -->
+<form class="filters" data-filters data-target={target} hidden>
+  <fieldset>
+    <legend class="visually-hidden">{t.filters.legend}</legend>
+    {
+      filters.map((f) => (
+        <label>
+          <span class="mono">{f.label}</span>
+          <select name={f.key} data-filter={f.key}>
+            <option value="">{t.filters.all}</option>
+            {f.options.map((o) => (
+              <option value={o.value}>{o.label}</option>
+            ))}
+          </select>
+        </label>
+      ))
+    }
+    <button type="reset" class="btn btn-sm">{t.filters.reset}</button>
+  </fieldset>
+  <p
+    class="status mono"
+    data-filter-status
+    data-template={t.filters.results(2).replace('2', '{n}')}
+    data-template-one={t.filters.results(1)}
+    aria-live="polite"
+  >
+  </p>
+</form>
+<p class="muted" data-filter-empty={target} hidden>{t.filters.empty}</p>
+
+<script>
+  import '@/scripts/filters';
+</script>
+
+<style>
+  .filters {
+    margin-bottom: var(--space-6);
+  }
+
+  fieldset {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: var(--space-3) var(--space-4);
+    border: 0;
+    padding: 0;
+  }
+
+  label {
+    display: grid;
+    gap: var(--space-1);
+    min-width: min(100%, 200px);
+  }
+
+  label .mono {
+    font-size: var(--text-xs);
+    color: var(--text-subtle);
+  }
+
+  select {
+    min-height: 40px;
+    padding: 0.4rem 2rem 0.4rem 0.75rem;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    font-size: var(--text-sm);
+  }
+
+  .status {
+    margin-top: var(--space-3);
+    font-size: var(--text-xs);
+    color: var(--text-subtle);
+    min-height: 1.5em;
+  }
+</style>

@@ -1,0 +1,76 @@
+---
+import { formatYearMonth, pick, useTranslations, type Locale } from '@/i18n';
+import type { TimelineEntry } from '@/content/schemas';
+
+interface Props {
+  entries: TimelineEntry[];
+  lang: Locale;
+}
+
+const { entries, lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<ol class="timeline" role="list">
+  {
+    entries.map((e) => (
+      <li>
+        <p class="when mono">
+          <time datetime={e.start}>{formatYearMonth(e.start, lang)}</time>
+          {' – '}
+          {e.end ? <time datetime={e.end}>{formatYearMonth(e.end, lang)}</time> : t.about.present}
+        </p>
+        <div class="what">
+          <h3>{pick(e.title, lang)}</h3>
+          <p class="org">{e.org}</p>
+          {e.description && <p class="desc">{pick(e.description, lang)}</p>}
+        </div>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .timeline {
+    max-width: var(--measure);
+  }
+
+  li {
+    display: grid;
+    gap: var(--space-1) var(--space-5);
+    padding-block: var(--space-4);
+    border-top: 1px solid var(--border);
+  }
+
+  li:last-child {
+    border-bottom: 1px solid var(--border);
+  }
+
+  @media (min-width: 640px) {
+    li {
+      grid-template-columns: 11rem 1fr;
+    }
+  }
+
+  .when {
+    font-size: var(--text-xs);
+    color: var(--text-subtle);
+    padding-top: 0.2rem;
+  }
+
+  h3 {
+    font-size: var(--text-base);
+    font-weight: 600;
+  }
+
+  .org {
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .desc {
+    margin-top: var(--space-2);
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+  }
+</style>

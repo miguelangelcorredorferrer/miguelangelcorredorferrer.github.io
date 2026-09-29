@@ -12,9 +12,11 @@ interface Props {
   /** Título de la página (sin el nombre del sitio). Omitir en la home. */
   title?: string;
   description?: string;
+  /** Destino del selector de idioma si la página no tiene equivalente directo. */
+  switchHref?: string;
 }
 
-const { lang, title, description } = Astro.props;
+const { lang, title, description, switchHref } = Astro.props;
 const t = useTranslations(lang);
 const fullTitle = title ? `${title} · ${profile.name}` : profile.name;
 const metaDescription = description ?? t.meta.siteDescription;
@@ -55,7 +57,7 @@ const csp = [
   </head>
   <body>
     <a class="skip-link" href="#main">{t.a11y.skipToContent}</a>
-    <Header lang={lang} />
+    <Header lang={lang} switchHref={switchHref} />
     <main id="main" tabindex="-1">
       <div class="container">
         <slot />

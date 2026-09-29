@@ -1,0 +1,161 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Icon from '@/components/Icon.astro';
+import { formatYearMonth, localeStaticPaths, pick, useTranslations, type Locale } from '@/i18n';
+import { languages, visibleCerts } from '@/lib/data';
+import { CERT_STATUS } from '@/content/schemas';
+
+export const getStaticPaths = localeStaticPaths;
+
+const lang = Astro.params.lang as Locale;
+const t = useTranslations(lang);
+
+// Insignias en src/assets/badges/, referenciadas por nombre de archivo en certs.yaml.
+const badgeFiles = import.meta.glob<ImageMetadata>('/src/assets/badges/*.{png,jpg,jpeg,webp,avif,svg}', {
+  eager: true,
+  import: 'default',
+});
+const badgeFor = (file?: string) => (file ? badgeFiles[`/src/assets/badges/${file}`] : undefined);
+
+const groups = CERT_STATUS.map((status) => ({
+  status,
+  certs: visibleCerts.filter((c) => c.status === status),
+})).filter((g) => g.certs.length > 0);
+---
+
+<BaseLayout lang={lang} title={t.certs.title} description={t.certs.intro}>
+  <header class="page-header">
+    <p class="eyebrow" aria-hidden="true">~/certifications</p>
+    <h1>{t.certs.title}</h1>
+    <p class="lead">{t.certs.intro}</p>
+  </header>
+
+  {groups.length === 0 && <p class="muted">{t.certs.empty}</p>}
+
+  {
+    groups.map((group) => (
+      <section class="section" aria-labelledby={`status-${group.status}`}>
+        <h2 id={`status-${group.status}`} class="section-title">
+          {t.certs.status[group.status]}
+        </h2>
+        <ul class="card-grid" role="list">
+          {group.certs.map((c) => {
+            const badge = badgeFor(c.badge);
+            return (
+              <li>
+                <article class="card cert">
+                  {badge && <Image src={badge} alt="" width={56} height={56} class="badge-img" />}
+                  <div>
+                    <h3>{c.name}</h3>
+                    <p>{c.issuer}</p>
+                    {c.date && (
+                      <p class="mono date">
+                        <time datetime={c.date}>{formatYearMonth(c.date, lang)}</time>
+                      </p>
+                    )}
+                    {c.credentialUrl && (
+                      <a class="credential" href={c.credentialUrl} rel="noopener noreferrer" target="_blank">
+                        {t.certs.credential}
+                        <Icon name="external" size={13} />
+                        <span class="visually-hidden">{t.a11y.externalLink}</span>
+                      </a>
+                    )}
+                  </div>
+                </article>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+    ))
+  }
+
+  <section class="section" aria-labelledby="languages-title">
+    <h2 id="languages-title" class="section-title">{t.certs.languagesTitle}</h2>
+    <ul class="languages" role="list">
+      {
+        languages.map((l) => (
+          <li>
+            <span class="name">{pick(l.language, lang)}</span>
+            <span class="level mono">{t.certs.levels[l.level]}</span>
+            {l.certificate && <span class="muted cert-name">{l.certificate}</span>}
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .section + .section {
+    margin-top: var(--space-8);
+  }
+
+  .section-title {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-5);
+  }
+
+  .cert {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+
+  .badge-img {
+    flex: none;
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+  }
+
+  .cert h3 {
+    font-size: var(--text-base);
+  }
+
+  .date {
+    margin-top: var(--space-1);
+    font-size: var(--text-xs);
+  }
+
+  .credential {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    margin-top: var(--space-3);
+    font-size: var(--text-sm);
+  }
+
+  .languages {
+    max-width: var(--measure);
+  }
+
+  .languages li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-1) var(--space-4);
+    padding-block: var(--space-3);
+    border-top: 1px solid var(--border);
+  }
+
+  .languages li:last-child {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .name {
+    font-weight: 550;
+    min-width: 8rem;
+  }
+
+  .level {
+    font-size: var(--text-sm);
+    color: var(--accent);
+  }
+
+  .cert-name {
+    font-size: var(--text-sm);
+  }
+</style>

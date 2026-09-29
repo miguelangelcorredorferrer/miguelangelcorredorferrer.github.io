@@ -1,0 +1,63 @@
+---
+import FallbackBadge from './FallbackBadge.astro';
+import { formatDate, useTranslations, type Locale } from '@/i18n';
+import { filterKey, type ProjectItem } from '@/lib/content';
+import { pagePath } from '@/lib/urls';
+
+interface Props {
+  item: ProjectItem;
+  lang: Locale;
+}
+
+const { item, lang } = Astro.props;
+const t = useTranslations(lang);
+const { data } = item.entry;
+---
+
+<li
+  data-filter-item
+  data-category={data.category}
+  data-tag={data.tags.map(filterKey).join(' ')}
+>
+  <article class="card" lang={item.contentLang}>
+    <div class="card-meta">
+      <span class="badge badge-accent" lang={lang}>{t.projects.categories[data.category]}</span>
+      <span class="status" data-status={data.status} lang={lang}>{t.projects.status[data.status]}</span>
+      {item.isFallback && <FallbackBadge lang={lang} contentLang={item.contentLang} />}
+    </div>
+    <h3><a href={pagePath(lang, `projects/${item.slug}`)}>{data.title}</a></h3>
+    <p>{data.summary}</p>
+    <div class="card-footer">
+      {data.tags.map((tag) => <span class="tag">{tag}</span>)}
+      <time class="date mono" datetime={data.date.toISOString()}>{formatDate(data.date, lang)}</time>
+    </div>
+  </article>
+</li>
+
+<style>
+  .status {
+    font-family: var(--font-mono);
+    color: var(--text-subtle);
+  }
+
+  .status::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin-right: 6px;
+    border-radius: 50%;
+    background: var(--text-subtle);
+    vertical-align: middle;
+  }
+
+  .status[data-status='done']::before {
+    background: var(--accent);
+  }
+
+  .date {
+    margin-left: auto;
+    font-size: var(--text-xs);
+    color: var(--text-subtle);
+  }
+</style>

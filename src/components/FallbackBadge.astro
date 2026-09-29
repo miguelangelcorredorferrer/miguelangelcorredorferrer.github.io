@@ -1,0 +1,21 @@
+---
+import { useTranslations, type Locale } from '@/i18n';
+
+interface Props {
+  /** Idioma de la interfaz. */
+  lang: Locale;
+  /** Idioma en el que está realmente el contenido. */
+  contentLang: Locale;
+}
+
+const { lang, contentLang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<span class="badge fallback" lang={lang}>{t.fallback.onlyIn[contentLang]}</span>
+
+<style>
+  .fallback {
+    border-style: dashed;
+  }
+</style>

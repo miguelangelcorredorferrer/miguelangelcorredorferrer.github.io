@@ -76,6 +76,7 @@ export const en: UIStrings = {
     os: 'OS',
     platform: 'Platform',
     difficultyLabel: 'Difficulty',
+    readingLabel: 'Reading',
     readingTime: (min: number) => `${min} min read`,
     toc: 'On this page',
     copy: 'Copy',

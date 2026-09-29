@@ -4,13 +4,15 @@ import { pagePath, stripLocale } from '@/lib/urls';
 
 interface Props {
   lang: Locale;
+  /** Destino explícito (p. ej. en la 404, que no tiene equivalente por idioma). */
+  href?: string;
 }
 
-const { lang } = Astro.props;
+const { lang, href: override } = Astro.props;
 const t = useTranslations(lang);
 const target = otherLocale(lang);
 // Todas las páginas existen en ambos idiomas (las entradas sin traducir usan la versión disponible).
-const href = pagePath(target, stripLocale(Astro.url.pathname));
+const href = override ?? pagePath(target, stripLocale(Astro.url.pathname));
 ---
 
 <a class="lang-switch" href={href} hreflang={target} lang={target} aria-label={t.a11y.switchLanguage}>

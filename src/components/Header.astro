@@ -8,9 +8,10 @@ import { cvHref, profile } from '@/lib/data';
 
 interface Props {
   lang: Locale;
+  switchHref?: string | undefined;
 }
 
-const { lang } = Astro.props;
+const { lang, switchHref } = Astro.props;
 const t = useTranslations(lang);
 const section = stripLocale(Astro.url.pathname).split('/')[0] ?? '';
 
@@ -50,7 +51,7 @@ const cv = cvHref(lang);
         <Icon name="download" size={14} />
         {t.nav.downloadCv}
       </a>
-      <LanguageSwitch lang={lang} />
+      <LanguageSwitch lang={lang} href={switchHref} />
       <ThemeToggle lang={lang} />
 
       <details class="nav-mobile">

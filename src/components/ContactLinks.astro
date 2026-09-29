@@ -1,0 +1,71 @@
+---
+import Icon from './Icon.astro';
+import { useTranslations, type Locale } from '@/i18n';
+import { profile } from '@/lib/data';
+
+interface Props {
+  lang: Locale;
+}
+
+const t = useTranslations(Astro.props.lang);
+const { links, email } = profile;
+
+/* El correo viaja partido, invertido y en base64: nunca aparece completo en el HTML. */
+const encode = (value: string) => Buffer.from([...value].reverse().join(''), 'utf8').toString('base64');
+---
+
+<ul class="contact" role="list">
+  {
+    links.linkedin && (
+      <li>
+        <a class="btn btn-primary" href={links.linkedin} rel="noopener noreferrer me" target="_blank">
+          <Icon name="linkedin" />
+          LinkedIn
+          <span class="visually-hidden">{t.a11y.externalLink}</span>
+        </a>
+      </li>
+    )
+  }
+  {
+    links.github && (
+      <li>
+        <a class="btn" href={links.github} rel="noopener noreferrer me" target="_blank">
+          <Icon name="github" />
+          GitHub
+          <span class="visually-hidden">{t.a11y.externalLink}</span>
+        </a>
+      </li>
+    )
+  }
+  {
+    email && (
+      <li class="email" data-email data-u={encode(email.user)} data-d={encode(email.domain)}>
+        <button type="button" class="btn" hidden>
+          <Icon name="mail" />
+          {t.contact.showEmail}
+        </button>
+        <p class="muted fallback" data-email-fallback>
+          {t.contact.emailFallback}
+        </p>
+      </li>
+    )
+  }
+</ul>
+
+<script>
+  import '@/scripts/email';
+</script>
+
+<style>
+  .contact {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .fallback {
+    font-size: var(--text-sm);
+    max-width: 44ch;
+  }
+</style>

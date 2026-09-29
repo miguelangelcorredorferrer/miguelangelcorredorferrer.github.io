@@ -1,0 +1,119 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import EntryHeader from '@/components/EntryHeader.astro';
+import Toc from '@/components/Toc.astro';
+import { formatDate, useTranslations, type Locale } from '@/i18n';
+import { detailPaths, readingTime, type WriteupItem } from '@/lib/content';
+import { pagePath } from '@/lib/urls';
+import '@/styles/prose.css';
+
+export const getStaticPaths = () => detailPaths('writeups');
+
+interface Props {
+  item: WriteupItem;
+}
+
+const lang = Astro.params.lang as Locale;
+const { item } = Astro.props;
+const t = useTranslations(lang);
+const { data } = item.entry;
+const { Content, headings } = await render(item.entry);
+const minutes = readingTime(item.entry.body);
+---
+
+<BaseLayout lang={lang} title={`${data.name} · ${data.platform}`} description={data.summary}>
+  <article lang={item.contentLang}>
+    <EntryHeader
+      lang={lang}
+      contentLang={item.contentLang}
+      isFallback={item.isFallback}
+      backHref={pagePath(lang, 'writeups')}
+      backLabel={t.writeups.back}
+      eyebrow={`${data.platform} · ${data.os}`}
+      title={data.name}
+      summary={data.summary}
+      tags={data.tags}
+    >
+      <dl slot="facts">
+        <div>
+          <dt>{t.writeups.difficultyLabel}</dt>
+          <dd>{t.writeups.difficulty[data.difficulty]}</dd>
+        </div>
+        <div>
+          <dt>{t.projects.date}</dt>
+          <dd>
+            <time datetime={data.date.toISOString()}>
+              {formatDate(data.date, lang, { year: 'numeric', month: 'short', day: 'numeric' })}
+            </time>
+          </dd>
+        </div>
+        <div>
+          <dt>{t.writeups.readingLabel}</dt>
+          <dd>{t.writeups.readingTime(minutes)}</dd>
+        </div>
+      </dl>
+      <p class="retired mono" lang={lang}>{t.writeups.retiredNote}</p>
+    </EntryHeader>
+
+    <div class="layout">
+      <aside class="toc-wrap">
+        <Toc headings={headings} title={t.writeups.toc} />
+      </aside>
+      <div
+        class="prose"
+        data-copy-code
+        data-copy-text={t.writeups.copy}
+        data-copied-text={t.writeups.copied}
+        data-copy-label={t.writeups.copyLabel}
+      >
+        <Content />
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<script>
+  import '@/scripts/copy-code';
+</script>
+
+<style>
+  .retired {
+    margin-top: var(--space-4);
+    font-size: var(--text-xs);
+    color: var(--text-subtle);
+  }
+
+  .layout {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .toc-wrap {
+    padding: var(--space-4);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+
+  .toc-wrap:not(:has(nav)) {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .layout {
+      grid-template-columns: minmax(0, 1fr) 220px;
+      gap: var(--space-8);
+      align-items: start;
+    }
+
+    .toc-wrap {
+      order: 2;
+      position: sticky;
+      top: var(--space-5);
+      padding: 0;
+      border: 0;
+      background: none;
+    }
+  }
+</style>

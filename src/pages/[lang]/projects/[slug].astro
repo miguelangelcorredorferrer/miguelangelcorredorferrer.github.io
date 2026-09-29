@@ -1,0 +1,139 @@
+---
+import { Picture } from 'astro:assets';
+import { render } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import EntryHeader from '@/components/EntryHeader.astro';
+import Icon from '@/components/Icon.astro';
+import { formatDate, useTranslations, type Locale } from '@/i18n';
+import { detailPaths, type ProjectItem } from '@/lib/content';
+import { pagePath } from '@/lib/urls';
+import '@/styles/prose.css';
+
+export const getStaticPaths = () => detailPaths('projects');
+
+interface Props {
+  item: ProjectItem;
+}
+
+const lang = Astro.params.lang as Locale;
+const { item } = Astro.props;
+const t = useTranslations(lang);
+const { data } = item.entry;
+const { Content } = await render(item.entry);
+
+const links = [
+  { label: t.projects.repo, href: data.repo },
+  { label: t.projects.demo, href: data.demo },
+].filter((l): l is { label: string; href: string } => Boolean(l.href));
+const display = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '');
+---
+
+<BaseLayout lang={lang} title={data.title} description={data.summary}>
+  <article lang={item.contentLang}>
+    <EntryHeader
+      lang={lang}
+      contentLang={item.contentLang}
+      isFallback={item.isFallback}
+      backHref={pagePath(lang, 'projects')}
+      backLabel={t.projects.back}
+      eyebrow={t.projects.categories[data.category]}
+      title={data.title}
+      summary={data.summary}
+      tags={data.tags}
+    >
+      <dl slot="facts">
+        <div>
+          <dt>{t.projects.stateLabel}</dt>
+          <dd>{t.projects.status[data.status]}</dd>
+        </div>
+        <div>
+          <dt>{t.projects.date}</dt>
+          <dd><time datetime={data.date.toISOString()}>{formatDate(data.date, lang)}</time></dd>
+        </div>
+        {
+          links.map((l) => (
+            <div>
+              <dt>{l.label}</dt>
+              <dd>
+                <a href={l.href} rel="noopener noreferrer" target="_blank">
+                  {display(l.href)}
+                  <Icon name="external" size={13} />
+                  <span class="visually-hidden">{t.a11y.externalLink}</span>
+                </a>
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </EntryHeader>
+
+    {
+      data.metrics.length > 0 && (
+        <section class="metrics" aria-label={t.projects.metrics}>
+          <dl>
+            {data.metrics.map((m) => (
+              <div>
+                <dt>{m.label}</dt>
+                <dd>{m.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      )
+    }
+
+    {
+      data.cover && (
+        <Picture
+          class="cover"
+          src={data.cover}
+          alt={data.coverAlt ?? ''}
+          formats={['avif', 'webp']}
+          widths={[640, 960, 1280]}
+          sizes="(min-width: 1100px) 1100px, 100vw"
+          loading="eager"
+          fetchpriority="high"
+        />
+      )
+    }
+
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .metrics dl {
+    display: grid;
+    gap: var(--space-3);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
+    max-width: var(--measure);
+    margin-bottom: var(--space-7);
+  }
+
+  .metrics dl > div {
+    padding: var(--space-4);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+
+  .metrics dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--text-subtle);
+  }
+
+  .metrics dd {
+    margin: var(--space-1) 0 0;
+    font-size: var(--text-xl);
+    font-weight: 600;
+  }
+
+  .cover {
+    margin-bottom: var(--space-7);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+</style>

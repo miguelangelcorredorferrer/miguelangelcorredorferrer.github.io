@@ -1,0 +1,25 @@
+---
+/**
+ * La raíz redirige a /es/. GitHub Pages no permite redirecciones HTTP,
+ * así que se usa <meta refresh> con un enlace visible como alternativa.
+ */
+import { pagePath } from '@/lib/urls';
+
+const target = pagePath('es');
+const canonical = new URL(target, Astro.site);
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Portfolio</title>
+    <meta http-equiv="refresh" content={`0; url=${target}`} />
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content="noindex" />
+  </head>
+  <body>
+    <p><a href={target}>Portfolio (ES)</a> · <a href={pagePath('en')} hreflang="en">Portfolio (EN)</a></p>
+  </body>
+</html>

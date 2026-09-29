@@ -1,0 +1,85 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Timeline from '@/components/Timeline.astro';
+import { localeStaticPaths, pick, useTranslations, type Locale } from '@/i18n';
+import { profile, skills, timeline } from '@/lib/data';
+
+export const getStaticPaths = localeStaticPaths;
+
+const lang = Astro.params.lang as Locale;
+const t = useTranslations(lang);
+const intro = pick(profile.about, lang);
+---
+
+<BaseLayout lang={lang} title={t.about.title} description={intro}>
+  <header class="page-header">
+    <p class="eyebrow" aria-hidden="true">~/about</p>
+    <h1>{t.about.title}</h1>
+    <p class="lead">{intro}</p>
+  </header>
+
+  {
+    timeline.experience.length > 0 && (
+      <section class="section" aria-labelledby="exp-title">
+        <h2 id="exp-title" class="section-title">{t.about.experience}</h2>
+        <Timeline entries={timeline.experience} lang={lang} />
+      </section>
+    )
+  }
+
+  {
+    timeline.education.length > 0 && (
+      <section class="section" aria-labelledby="edu-title">
+        <h2 id="edu-title" class="section-title">{t.about.education}</h2>
+        <Timeline entries={timeline.education} lang={lang} />
+      </section>
+    )
+  }
+
+  <section class="section" aria-labelledby="stack-title">
+    <h2 id="stack-title" class="section-title">{t.about.stack}</h2>
+    <dl class="skills">
+      {
+        skills.map((group) => (
+          <div>
+            <dt class="mono">{pick(group.area, lang)}</dt>
+            <dd>
+              <ul class="chips" role="list">
+                {group.items.map((item) => (
+                  <li class="chip">{item}</li>
+                ))}
+              </ul>
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+</BaseLayout>
+
+<style>
+  .section + .section {
+    margin-top: var(--space-8);
+  }
+
+  .section-title {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-5);
+  }
+
+  .skills {
+    display: grid;
+    gap: var(--space-4) var(--space-6);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  }
+
+  .skills dt {
+    margin-bottom: var(--space-2);
+    font-size: var(--text-xs);
+    color: var(--text-subtle);
+  }
+
+  .skills dd {
+    margin: 0;
+  }
+</style>

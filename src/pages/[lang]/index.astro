@@ -1,11 +1,295 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { localeStaticPaths, type Locale } from '@/i18n';
+import Icon from '@/components/Icon.astro';
+import ProjectCard from '@/components/ProjectCard.astro';
+import WriteupCard from '@/components/WriteupCard.astro';
+import ContactLinks from '@/components/ContactLinks.astro';
+import { formatYearMonth, localeStaticPaths, pick, useTranslations, type Locale } from '@/i18n';
+import { cvHref, languages, profile, skills, visibleCerts } from '@/lib/data';
+import { getProjects, getWriteups } from '@/lib/content';
+import { pagePath } from '@/lib/urls';
 
 export const getStaticPaths = localeStaticPaths;
+
 const lang = Astro.params.lang as Locale;
+const t = useTranslations(lang);
+const cv = cvHref(lang);
+
+const projects = await getProjects(lang);
+const featured = projects.filter((p) => p.entry.data.featured);
+const shownProjects = (featured.length ? featured : projects).slice(0, 4);
+const latestWriteups = (await getWriteups(lang)).slice(0, 3);
+const certs = visibleCerts.filter((c) => c.status !== 'planned');
 ---
 
 <BaseLayout lang={lang}>
-  <p>Layout</p>
+  <!-- 1. Hero -->
+  <section class="hero" aria-labelledby="hero-title">
+    <p class="eyebrow" aria-hidden="true">~$ whoami</p>
+    <h1 id="hero-title">{profile.name}</h1>
+    <p class="headline">{pick(profile.headline, lang)}</p>
+    <p class="lead">{pick(profile.positioning, lang)}</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href={cv.href} hreflang={cv.lang} download>
+        <Icon name="download" />
+        {t.nav.downloadCv}
+      </a>
+      <a class="btn" href="#contact">{t.nav.contact}</a>
+    </div>
+    {
+      profile.currently && (
+        <p class="currently">
+          <span class="dot" aria-hidden="true" />
+          <span class="mono">{t.home.currently}:</span> {pick(profile.currently, lang)}
+        </p>
+      )
+    }
+  </section>
+
+  <!-- 2. Sobre mí -->
+  <section class="section" aria-labelledby="about-title">
+    <div class="section-head">
+      <h2 id="about-title">{t.home.aboutTitle}</h2>
+      <a class="link-arrow" href={pagePath(lang, 'about')}>{t.home.seeDetails}</a>
+    </div>
+    <p class="about-text">{pick(profile.about, lang)}</p>
+    <dl class="skills">
+      {
+        skills.map((group) => (
+          <div class="skill-group">
+            <dt class="mono">{pick(group.area, lang)}</dt>
+            <dd>
+              <ul class="chips" role="list">
+                {group.items.map((item) => (
+                  <li class="chip">{item}</li>
+                ))}
+              </ul>
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+
+  <!-- 3. Proyectos destacados -->
+  <section class="section" aria-labelledby="projects-title">
+    <div class="section-head">
+      <h2 id="projects-title">{t.home.featuredTitle}</h2>
+      {projects.length > 0 && <a class="link-arrow" href={pagePath(lang, 'projects')}>{t.home.seeAll}</a>}
+    </div>
+    {
+      shownProjects.length ? (
+        <ul class="card-grid" role="list">
+          {shownProjects.map((item) => (
+            <ProjectCard item={item} lang={lang} />
+          ))}
+        </ul>
+      ) : (
+        <p class="muted">{t.home.emptyProjects}</p>
+      )
+    }
+  </section>
+
+  <!-- 4. Últimos writeups -->
+  <section class="section" aria-labelledby="writeups-title">
+    <div class="section-head">
+      <h2 id="writeups-title">{t.home.latestWriteupsTitle}</h2>
+      {latestWriteups.length > 0 && <a class="link-arrow" href={pagePath(lang, 'writeups')}>{t.home.seeAll}</a>}
+    </div>
+    {
+      latestWriteups.length ? (
+        <ul class="card-grid" role="list">
+          {latestWriteups.map((item) => (
+            <WriteupCard item={item} lang={lang} />
+          ))}
+        </ul>
+      ) : (
+        <p class="muted">{t.home.emptyWriteups}</p>
+      )
+    }
+  </section>
+
+  <!-- 5. Certificaciones e idiomas -->
+  <section class="section" aria-labelledby="creds-title">
+    <div class="section-head">
+      <h2 id="creds-title">{t.home.credentialsTitle}</h2>
+      <a class="link-arrow" href={pagePath(lang, 'certifications')}>{t.home.seeDetails}</a>
+    </div>
+    <div class="creds">
+      <div>
+        <h3 class="creds-title mono">{t.certs.title}</h3>
+        {
+          certs.length ? (
+            <ul class="compact-list" role="list">
+              {certs.map((c) => (
+                <li>
+                  <span class="item-name">{c.name}</span>
+                  <span class="item-meta">
+                    {c.issuer}
+                    {c.status === 'in-progress' ? (
+                      <span class="badge">{t.certs.status['in-progress']}</span>
+                    ) : (
+                      c.date && <span class="mono">{formatYearMonth(c.date, lang)}</span>
+                    )}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p class="muted">{t.certs.empty}</p>
+          )
+        }
+      </div>
+      <div>
+        <h3 class="creds-title mono">{t.certs.languagesTitle}</h3>
+        <ul class="compact-list" role="list">
+          {
+            languages.map((l) => (
+              <li>
+                <span class="item-name">{pick(l.language, lang)}</span>
+                <span class="item-meta mono">{t.certs.levels[l.level]}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Contacto -->
+  <section class="section contact" id="contact" aria-labelledby="contact-title">
+    <h2 id="contact-title">{t.home.contactTitle}</h2>
+    <p class="muted">{t.home.contactText}</p>
+    <ContactLinks lang={lang} />
+  </section>
 </BaseLayout>
+
+<style>
+  .hero {
+    padding-block: var(--space-6) var(--space-4);
+    max-width: 52rem;
+  }
+
+  .hero h1 {
+    margin-top: var(--space-3);
+    font-size: var(--text-3xl);
+    letter-spacing: -0.025em;
+  }
+
+  .headline {
+    margin-top: var(--space-3);
+    font-size: var(--text-xl);
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .hero .lead {
+    margin-top: var(--space-4);
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+  }
+
+  .currently {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0 var(--space-2);
+    margin-top: var(--space-5);
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+  }
+
+  .currently .mono {
+    color: var(--text-subtle);
+    font-size: var(--text-xs);
+  }
+
+  .dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+
+  .about-text {
+    max-width: var(--measure);
+    color: var(--text-muted);
+  }
+
+  .skills {
+    display: grid;
+    gap: var(--space-4) var(--space-6);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    margin-top: var(--space-6);
+  }
+
+  .skill-group dt {
+    margin-bottom: var(--space-2);
+    font-size: var(--text-xs);
+    color: var(--text-subtle);
+  }
+
+  .skill-group dd {
+    margin: 0;
+  }
+
+  .creds {
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  }
+
+  .creds-title {
+    margin-bottom: var(--space-3);
+    font-size: var(--text-xs);
+    font-weight: 400;
+    color: var(--text-subtle);
+    letter-spacing: 0;
+  }
+
+  .compact-list li {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-1) var(--space-4);
+    padding-block: var(--space-3);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .compact-list li:first-child {
+    border-top: 1px solid var(--border);
+  }
+
+  .item-name {
+    font-weight: 550;
+  }
+
+  .item-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .contact h2 {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-3);
+  }
+
+  .contact > p {
+    max-width: var(--measure);
+    margin-bottom: var(--space-5);
+  }
+
+  .contact {
+    scroll-margin-top: var(--space-5);
+  }
+</style>

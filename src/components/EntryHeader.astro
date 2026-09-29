@@ -1,0 +1,82 @@
+---
+/** Cabecera común de las páginas de detalle (proyectos y writeups). */
+import FallbackBadge from './FallbackBadge.astro';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  lang: Locale;
+  contentLang: Locale;
+  isFallback: boolean;
+  backHref: string;
+  backLabel: string;
+  eyebrow: string;
+  title: string;
+  summary: string;
+  tags: string[];
+}
+
+const { lang, contentLang, isFallback, backHref, backLabel, eyebrow, title, summary, tags } = Astro.props;
+---
+
+<header class="entry-header">
+  <a class="back" href={backHref} lang={lang}>← {backLabel}</a>
+  <p class="eyebrow">{eyebrow}</p>
+  <h1>{title}</h1>
+  <p class="lead">{summary}</p>
+  {isFallback && <FallbackBadge lang={lang} contentLang={contentLang} />}
+  <div class="facts" lang={lang}>
+    <slot name="facts" />
+  </div>
+  <ul class="chips" role="list">
+    {tags.map((tag) => <li class="chip">{tag}</li>)}
+  </ul>
+  <slot />
+</header>
+
+<style>
+  .entry-header {
+    max-width: var(--measure);
+    margin-bottom: var(--space-7);
+  }
+
+  .back {
+    display: inline-block;
+    margin-bottom: var(--space-5);
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+
+  .back:hover {
+    color: var(--accent);
+  }
+
+  h1 {
+    margin-block: var(--space-2) var(--space-3);
+    font-size: var(--text-2xl);
+  }
+
+  .facts :global(dl) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-6);
+    margin-block: var(--space-5);
+    font-size: var(--text-sm);
+  }
+
+  .facts :global(dt) {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--text-subtle);
+  }
+
+  .facts :global(dd) {
+    margin: 0;
+  }
+
+  .facts :global(a) {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+  }
+</style>

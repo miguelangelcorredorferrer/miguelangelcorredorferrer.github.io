@@ -1,0 +1,55 @@
+---
+/**
+ * GitHub Pages sirve /404.html para cualquier ruta inexistente, en cualquier idioma,
+ * así que esta página es bilingüe.
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { useTranslations } from '@/i18n';
+import { pagePath } from '@/lib/urls';
+
+const es = useTranslations('es');
+const en = useTranslations('en');
+---
+
+<BaseLayout lang="es" title={`404 · ${es.notFound.title}`} description={es.notFound.text} switchHref={pagePath('en')}>
+  <section class="not-found">
+    <p class="code mono" aria-hidden="true">~$ cd ./ruta<br />bash: cd: No such file or directory</p>
+    <h1>{es.notFound.title}</h1>
+    <p class="lead">{es.notFound.text}</p>
+    <p class="lead" lang="en">{en.notFound.text}</p>
+    <div class="actions">
+      <a class="btn btn-primary" href={pagePath('es')}>{es.notFound.back}</a>
+      <a class="btn" href={pagePath('en')} lang="en" hreflang="en">{en.notFound.back}</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found {
+    max-width: var(--measure);
+    padding-block: var(--space-7);
+  }
+
+  .code {
+    margin-bottom: var(--space-5);
+    font-size: var(--text-sm);
+    color: var(--text-subtle);
+  }
+
+  h1 {
+    font-size: var(--text-3xl);
+    margin-bottom: var(--space-4);
+  }
+
+  .lead + .lead {
+    margin-top: var(--space-2);
+    font-size: var(--text-base);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+  }
+</style>

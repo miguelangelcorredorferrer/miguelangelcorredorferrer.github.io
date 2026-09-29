@@ -156,7 +156,8 @@ main {
   max-width: var(--measure);
 }
 
-.section + .section {
+.section + .section,
+.hero + .section {
   margin-top: var(--space-9);
 }
 
@@ -177,7 +178,6 @@ main {
   font-size: var(--text-xs);
   color: var(--accent);
   letter-spacing: 0.02em;
-  text-transform: lowercase;
 }
 
 .muted {
@@ -247,8 +247,9 @@ main {
 }
 
 .link-arrow::after {
-  content: ' →';
+  content: '→';
   display: inline-block;
+  margin-left: 0.3em;
   transition: transform var(--dur) var(--ease);
 }
 

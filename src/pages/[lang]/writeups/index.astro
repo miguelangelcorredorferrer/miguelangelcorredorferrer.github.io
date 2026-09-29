@@ -1,0 +1,61 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import WriteupCard from '@/components/WriteupCard.astro';
+import FilterForm from '@/components/FilterForm.astro';
+import { localeStaticPaths, useTranslations, type Locale } from '@/i18n';
+import { filterKey, getWriteups, uniqueSorted } from '@/lib/content';
+import { WRITEUP_DIFFICULTIES } from '@/content/schemas';
+
+export const getStaticPaths = localeStaticPaths;
+
+const lang = Astro.params.lang as Locale;
+const t = useTranslations(lang);
+const writeups = await getWriteups(lang);
+
+const platforms = uniqueSorted(writeups.map((w) => w.entry.data.platform));
+const difficulties = WRITEUP_DIFFICULTIES.filter((d) => writeups.some((w) => w.entry.data.difficulty === d));
+const tags = uniqueSorted(writeups.flatMap((w) => w.entry.data.tags));
+---
+
+<BaseLayout lang={lang} title={t.writeups.title} description={t.writeups.intro}>
+  <header class="page-header">
+    <p class="eyebrow" aria-hidden="true">~/writeups</p>
+    <h1>{t.writeups.title}</h1>
+    <p class="lead">{t.writeups.intro}</p>
+  </header>
+
+  {
+    writeups.length ? (
+      <>
+        <FilterForm
+          lang={lang}
+          target="writeup-list"
+          filters={[
+            {
+              key: 'platform',
+              label: t.filters.platform,
+              options: platforms.map((p) => ({ value: filterKey(p), label: p })),
+            },
+            {
+              key: 'difficulty',
+              label: t.filters.difficulty,
+              options: difficulties.map((d) => ({ value: d, label: t.writeups.difficulty[d] })),
+            },
+            {
+              key: 'tag',
+              label: t.filters.tag,
+              options: tags.map((tag) => ({ value: filterKey(tag), label: tag })),
+            },
+          ]}
+        />
+        <ul id="writeup-list" class="card-grid" role="list">
+          {writeups.map((item) => (
+            <WriteupCard item={item} lang={lang} />
+          ))}
+        </ul>
+      </>
+    ) : (
+      <p class="muted">{t.home.emptyWriteups}</p>
+    )
+  }
+</BaseLayout>
