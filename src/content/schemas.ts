@@ -109,6 +109,8 @@ export const skillsFileSchema = z.object({
 
 export const profileSchema = z.object({
   name: text,
+  /** Versión corta para la cabecera (opcional; si falta se usa `name`). */
+  shortName: text.optional(),
   headline: localized,
   positioning: localized,
   currently: localized.optional(),

@@ -1,0 +1,60 @@
+---
+import Icon from './Icon.astro';
+import { useTranslations, type Locale } from '@/i18n';
+
+interface Props {
+  lang: Locale;
+}
+
+const t = useTranslations(Astro.props.lang);
+---
+
+<button
+  type="button"
+  class="theme-toggle"
+  data-theme-toggle
+  data-label-light={t.a11y.themeToLight}
+  data-label-dark={t.a11y.themeToDark}
+  aria-label={t.a11y.themeToLight}
+  hidden
+>
+  <span class="icon-sun"><Icon name="sun" /></span>
+  <span class="icon-moon"><Icon name="moon" /></span>
+</button>
+
+<script>
+  import '@/scripts/theme-toggle';
+</script>
+
+<style>
+  .theme-toggle {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition:
+      color var(--dur) var(--ease),
+      border-color var(--dur) var(--ease);
+  }
+
+  .theme-toggle:hover {
+    color: var(--text);
+    border-color: var(--border-strong);
+  }
+
+  /* Muestra el icono del tema al que se cambiará. */
+  .theme-toggle .icon-moon,
+  .theme-toggle[data-current='light'] .icon-sun {
+    display: none;
+  }
+
+  .theme-toggle[data-current='light'] .icon-moon {
+    display: block;
+  }
+</style>

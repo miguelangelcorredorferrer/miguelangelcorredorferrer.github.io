@@ -16,6 +16,8 @@ import certsRaw from '@/data/certs.yaml?raw';
 import languagesRaw from '@/data/languages.yaml?raw';
 import skillsRaw from '@/data/skills.yaml?raw';
 import timelineRaw from '@/data/timeline.yaml?raw';
+import type { Locale } from '@/i18n';
+import { withBase } from '@/lib/urls';
 
 function load<T extends z.ZodType>(file: string, raw: string, schema: T): z.infer<T> {
   const result = schema.safeParse(parse(raw) ?? {});
@@ -34,3 +36,9 @@ export const timeline = load('timeline.yaml', timelineRaw, timelineFileSchema);
 
 /** Certificaciones visibles: las `planned` solo si showPlanned es true. */
 export const visibleCerts = certsFile.certs.filter((c) => c.status !== 'planned' || certsFile.showPlanned);
+
+/** CV en el idioma pedido; si no existe esa versión, el español. */
+export const cvHref = (lang: Locale): { href: string; lang: Locale } => {
+  const path = profile.cv[lang];
+  return path ? { href: withBase(path), lang } : { href: withBase(profile.cv.es), lang: 'es' };
+};

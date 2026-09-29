@@ -1,0 +1,66 @@
+---
+import '@/styles/fonts.css';
+import '@/styles/global.css';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import { useTranslations, type Locale } from '@/i18n';
+import { withBase } from '@/lib/urls';
+import { profile } from '@/lib/data';
+
+interface Props {
+  lang: Locale;
+  /** Título de la página (sin el nombre del sitio). Omitir en la home. */
+  title?: string;
+  description?: string;
+}
+
+const { lang, title, description } = Astro.props;
+const t = useTranslations(lang);
+const fullTitle = title ? `${title} · ${profile.name}` : profile.name;
+const metaDescription = description ?? t.meta.siteDescription;
+
+/*
+ * CSP por <meta>: GitHub Pages no permite cabeceras HTTP propias, así que
+ * frame-ancestors, report-uri y sandbox no son aplicables (el navegador los ignora en <meta>).
+ * Solo en producción: el servidor de desarrollo de Vite inyecta estilos y scripts en línea.
+ */
+const csp = [
+  "default-src 'self'",
+  "script-src 'self'",
+  "style-src 'self'",
+  "img-src 'self'",
+  "font-src 'self'",
+  "connect-src 'self'",
+  "manifest-src 'self'",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'none'",
+  'upgrade-insecure-requests',
+].join('; ');
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    {import.meta.env.PROD && <meta http-equiv="Content-Security-Policy" content={csp} />}
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={metaDescription} />
+    <meta name="color-scheme" content="dark light" />
+    <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
+    <script is:inline src={withBase('/js/theme-init.js')}></script>
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{t.a11y.skipToContent}</a>
+    <Header lang={lang} />
+    <main id="main" tabindex="-1">
+      <div class="container">
+        <slot />
+      </div>
+    </main>
+    <Footer lang={lang} />
+  </body>
+</html>

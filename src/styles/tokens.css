@@ -1,0 +1,108 @@
+/*
+ * Design tokens. Único color de acento + escala neutra.
+ * Oscuro por defecto; claro si el sistema lo prefiere o si se elige con el botón.
+ * data-theme en <html> lo pone public/js/theme-init.js (preferencia guardada).
+ */
+:root {
+  color-scheme: dark;
+
+  /* Neutros (oscuro) */
+  --bg: #0d1015;
+  --surface: #13171e;
+  --surface-2: #191e27;
+  --border: #252b35;
+  --border-strong: #353d4a;
+  --text: #e5e8ec;
+  --text-muted: #9ba4b1;
+  --text-subtle: #7d8795;
+
+  /* Acento */
+  --accent: #5fd4c0;
+  --accent-strong: #86e3d3;
+  --accent-soft: rgb(95 212 192 / 0.12);
+  --on-accent: #06221d;
+
+  --focus: #86e3d3;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.3);
+  --shadow-hover: 0 4px 16px rgb(0 0 0 / 0.35);
+
+  /* Tipografía */
+  --font-sans: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --text-xs: 0.78rem;
+  --text-sm: 0.875rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: clamp(1.3rem, 1.1rem + 0.8vw, 1.55rem);
+  --text-2xl: clamp(1.6rem, 1.3rem + 1.4vw, 2.1rem);
+  --text-3xl: clamp(2rem, 1.4rem + 2.8vw, 3rem);
+  --leading: 1.65;
+  --leading-tight: 1.2;
+
+  /* Espaciado y forma */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+  --space-9: 6rem;
+  --radius: 10px;
+  --radius-sm: 6px;
+  --container: 1100px;
+  --measure: 70ch;
+  --gutter: 1rem;
+
+  /* Movimiento */
+  --dur: 180ms;
+  --ease: cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+
+@media (min-width: 768px) {
+  :root {
+    --gutter: 1.5rem;
+  }
+}
+
+/* Paleta clara: preferencia del sistema (si no se forzó oscuro) o elección explícita. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) {
+    color-scheme: light;
+    --bg: #fbfbfc;
+    --surface: #ffffff;
+    --surface-2: #f3f4f6;
+    --border: #e2e5ea;
+    --border-strong: #cfd4dc;
+    --text: #151a21;
+    --text-muted: #535c69;
+    --text-subtle: #616a77;
+    --accent: #0b7465;
+    --accent-strong: #075e52;
+    --accent-soft: rgb(11 116 101 / 0.08);
+    --on-accent: #ffffff;
+    --focus: #0b7465;
+    --shadow: 0 1px 2px rgb(16 24 40 / 0.05);
+    --shadow-hover: 0 4px 16px rgb(16 24 40 / 0.08);
+  }
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --bg: #fbfbfc;
+  --surface: #ffffff;
+  --surface-2: #f3f4f6;
+  --border: #e2e5ea;
+  --border-strong: #cfd4dc;
+  --text: #151a21;
+  --text-muted: #535c69;
+  --text-subtle: #616a77;
+  --accent: #0b7465;
+  --accent-strong: #075e52;
+  --accent-soft: rgb(11 116 101 / 0.08);
+  --on-accent: #ffffff;
+  --focus: #0b7465;
+  --shadow: 0 1px 2px rgb(16 24 40 / 0.05);
+  --shadow-hover: 0 4px 16px rgb(16 24 40 / 0.08);
+}

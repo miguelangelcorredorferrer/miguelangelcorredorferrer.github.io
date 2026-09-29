@@ -1,0 +1,78 @@
+---
+import Icon from './Icon.astro';
+import { useTranslations, type Locale } from '@/i18n';
+import { profile } from '@/lib/data';
+
+interface Props {
+  lang: Locale;
+}
+
+const t = useTranslations(Astro.props.lang);
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container row">
+    <p>© {year} {profile.name}</p>
+    <ul class="social" role="list">
+      {
+        profile.links.linkedin && (
+          <li>
+            <a href={profile.links.linkedin} rel="noopener noreferrer me" target="_blank">
+              <Icon name="linkedin" label="LinkedIn" />
+            </a>
+          </li>
+        )
+      }
+      {
+        profile.links.github && (
+          <li>
+            <a href={profile.links.github} rel="noopener noreferrer me" target="_blank">
+              <Icon name="github" label="GitHub" />
+            </a>
+          </li>
+        )
+      }
+    </ul>
+    <p class="note mono">{t.footer.note}</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--border);
+    padding-block: var(--space-6);
+    color: var(--text-subtle);
+    font-size: var(--text-sm);
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3) var(--space-5);
+  }
+
+  .social {
+    display: flex;
+    gap: var(--space-1);
+  }
+
+  .social a {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    color: var(--text-muted);
+    border-radius: var(--radius-sm);
+  }
+
+  .social a:hover {
+    color: var(--accent);
+  }
+
+  .note {
+    margin-left: auto;
+    font-size: var(--text-xs);
+  }
+</style>

@@ -1,0 +1,166 @@
+/* Contenido Markdown (proyectos y writeups). */
+@import './generated/shiki.css';
+
+.prose {
+  max-width: var(--measure);
+  color: var(--text);
+}
+
+.prose > * + * {
+  margin-top: 1.1em;
+}
+
+.prose h2 {
+  margin-top: 2.4em;
+  padding-top: var(--space-2);
+  font-size: var(--text-xl);
+  scroll-margin-top: var(--space-5);
+}
+
+.prose h3 {
+  margin-top: 1.8em;
+  font-size: var(--text-lg);
+  scroll-margin-top: var(--space-5);
+}
+
+.prose h2 + *,
+.prose h3 + * {
+  margin-top: 0.6em;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.3em;
+}
+
+.prose li + li {
+  margin-top: 0.35em;
+}
+
+.prose li::marker {
+  color: var(--text-subtle);
+}
+
+.prose blockquote {
+  padding: var(--space-3) var(--space-4);
+  border-left: 3px solid var(--accent);
+  background: var(--surface);
+  color: var(--text-muted);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.prose hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin-block: 2.5em;
+}
+
+.prose img {
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+.prose :not(pre) > code {
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+}
+
+/* Tablas: desplazamiento horizontal propio en móvil. */
+.prose table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.prose th,
+.prose td {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.prose th {
+  background: var(--surface-2);
+  font-weight: 600;
+}
+
+/* ── Bloques de código (Shiki, colores por clases: ver shiki-csp.mjs) ── */
+.code-block {
+  position: relative;
+}
+
+.prose pre {
+  padding: var(--space-4);
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  tab-size: 2;
+}
+
+.prose pre code {
+  font-family: inherit;
+}
+
+.astro-code span {
+  color: var(--c-dark);
+  font-style: var(--fs-dark, normal);
+  font-weight: var(--fw-dark, normal);
+  text-decoration: var(--td-dark, none);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) .astro-code span {
+    color: var(--c-light);
+    font-style: var(--fs-light, normal);
+    font-weight: var(--fw-light, normal);
+    text-decoration: var(--td-light, none);
+  }
+}
+
+:root[data-theme='light'] .astro-code span {
+  color: var(--c-light);
+  font-style: var(--fs-light, normal);
+  font-weight: var(--fw-light, normal);
+  text-decoration: var(--td-light, none);
+}
+
+.copy-btn {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  cursor: pointer;
+  opacity: 0.85;
+  transition:
+    opacity var(--dur) var(--ease),
+    color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease);
+}
+
+.copy-btn:hover,
+.copy-btn:focus-visible {
+  opacity: 1;
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+.copy-btn[data-copied] {
+  color: var(--accent);
+}

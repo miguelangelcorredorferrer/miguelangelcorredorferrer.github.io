@@ -3,6 +3,8 @@
 # Todo lo marcado con [EJEMPLO] debe sustituirse: `npm run check:content` falla mientras quede alguno.
 
 name: Miguel Ángel Corredor Ferrer
+# Versión corta que aparece en la cabecera. Ajústala o bórrala (se usará `name`).
+shortName: Miguel Corredor
 
 headline:
   es: "[EJEMPLO] Titular profesional, p. ej. tu rol actual y hacia dónde vas"

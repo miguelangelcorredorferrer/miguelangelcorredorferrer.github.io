@@ -1,0 +1,11 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { localeStaticPaths, type Locale } from '@/i18n';
+
+export const getStaticPaths = localeStaticPaths;
+const lang = Astro.params.lang as Locale;
+---
+
+<BaseLayout lang={lang}>
+  <p>Layout</p>
+</BaseLayout>
