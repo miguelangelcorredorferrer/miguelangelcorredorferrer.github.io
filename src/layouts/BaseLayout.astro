@@ -3,8 +3,8 @@ import '@/styles/fonts.css';
 import '@/styles/global.css';
 import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
-import { useTranslations, type Locale } from '@/i18n';
-import { withBase } from '@/lib/urls';
+import { DEFAULT_LOCALE, LOCALES, useTranslations, type Locale } from '@/i18n';
+import { pagePath, stripLocale, withBase } from '@/lib/urls';
 import { profile } from '@/lib/data';
 
 interface Props {
@@ -14,9 +14,18 @@ interface Props {
   description?: string;
   /** Destino del selector de idioma si la página no tiene equivalente directo. */
   switchHref?: string;
+  /** Sin alternativas hreflang (p. ej. 404). */
+  noAlternates?: boolean;
 }
 
-const { lang, title, description, switchHref } = Astro.props;
+const { lang, title, description, switchHref, noAlternates = false } = Astro.props;
+const route = stripLocale(Astro.url.pathname);
+const alternates = noAlternates
+  ? []
+  : [
+      ...LOCALES.map((l) => ({ hreflang: l, href: new URL(pagePath(l, route), Astro.site).href })),
+      { hreflang: 'x-default', href: new URL(pagePath(DEFAULT_LOCALE, route), Astro.site).href },
+    ];
 const t = useTranslations(lang);
 const fullTitle = title ? `${title} · ${profile.name}` : profile.name;
 const metaDescription = description ?? t.meta.siteDescription;
@@ -53,6 +62,7 @@ const csp = [
     <meta name="color-scheme" content="dark light" />
     <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
     <script is:inline src={withBase('/js/theme-init.js')}></script>
+    {alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
     <slot name="head" />
   </head>
   <body>
