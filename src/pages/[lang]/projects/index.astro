@@ -44,7 +44,7 @@ const tags = uniqueSorted(projects.flatMap((p) => p.entry.data.tags));
         />
         <ul id="project-list" class="card-grid" role="list">
           {projects.map((item) => (
-            <ProjectCard item={item} lang={lang} />
+            <ProjectCard item={item} lang={lang} headingLevel="h2" />
           ))}
         </ul>
       </>

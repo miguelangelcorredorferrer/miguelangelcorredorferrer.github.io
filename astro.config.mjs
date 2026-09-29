@@ -21,8 +21,8 @@ await writeShikiCss(fileURLToPath(new URL('./src/styles/generated/shiki.css', im
 // Páginas /<idioma>/<colección>/<slug>/ que solo existen como fallback (sin traducción):
 // se excluyen del sitemap porque su canonical apunta a la versión original.
 const fallbackPaths = ['projects', 'writeups'].flatMap((kind) => {
-  const dir = (lang) => new URL(`./src/content/${kind}/${lang}/`, import.meta.url);
-  const slugs = (lang) =>
+  const dir = (/** @type {string} */ lang) => new URL(`./src/content/${kind}/${lang}/`, import.meta.url);
+  const slugs = (/** @type {string} */ lang) =>
     existsSync(dir(lang)) ? readdirSync(dir(lang)).filter((f) => f.endsWith('.md')).map((f) => f.slice(0, -3)) : [];
   const es = slugs('es');
   const en = slugs('en');

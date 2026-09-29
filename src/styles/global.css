@@ -340,28 +340,28 @@ main {
   box-shadow: var(--shadow-hover);
 }
 
-.card h3 {
+.card-title {
   font-size: var(--text-lg);
 }
 
 /* Toda la tarjeta clicable sin anidar enlaces. */
-.card h3 a {
+.card-title a {
   color: var(--text);
   text-decoration: none;
 }
 
-.card h3 a::after {
+.card-title a::after {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: inherit;
 }
 
-.card h3 a:focus-visible {
+.card-title a:focus-visible {
   outline: none;
 }
 
-.card:has(h3 a:focus-visible) {
+.card:has(.card-title a:focus-visible) {
   outline: 2px solid var(--focus);
   outline-offset: 3px;
 }

@@ -7,9 +7,12 @@ import { pagePath } from '@/lib/urls';
 interface Props {
   item: ProjectItem;
   lang: Locale;
+  /** h2 en listados (bajo el h1), h3 en la home (bajo un h2). */
+  headingLevel?: 'h2' | 'h3';
 }
 
-const { item, lang } = Astro.props;
+const { item, lang, headingLevel = 'h3' } = Astro.props;
+const Heading = headingLevel;
 const t = useTranslations(lang);
 const { data } = item.entry;
 ---
@@ -25,7 +28,7 @@ const { data } = item.entry;
       <span class="status" data-status={data.status} lang={lang}>{t.projects.status[data.status]}</span>
       {item.isFallback && <FallbackBadge lang={lang} contentLang={item.contentLang} />}
     </div>
-    <h3><a href={pagePath(lang, `projects/${item.slug}`)}>{data.title}</a></h3>
+    <Heading class="card-title"><a href={pagePath(lang, `projects/${item.slug}`)}>{data.title}</a></Heading>
     <p>{data.summary}</p>
     <div class="card-footer">
       {data.tags.map((tag) => <span class="tag">{tag}</span>)}

@@ -50,7 +50,7 @@ const tags = uniqueSorted(writeups.flatMap((w) => w.entry.data.tags));
         />
         <ul id="writeup-list" class="card-grid" role="list">
           {writeups.map((item) => (
-            <WriteupCard item={item} lang={lang} />
+            <WriteupCard item={item} lang={lang} headingLevel="h2" />
           ))}
         </ul>
       </>

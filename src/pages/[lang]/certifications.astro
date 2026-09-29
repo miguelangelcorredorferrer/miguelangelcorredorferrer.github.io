@@ -48,7 +48,7 @@ const groups = CERT_STATUS.map((status) => ({
                 <article class="card cert">
                   {badge && <Image src={badge} alt="" width={56} height={56} class="badge-img" />}
                   <div>
-                    <h3>{c.name}</h3>
+                    <h3 class="card-title">{c.name}</h3>
                     <p>{c.issuer}</p>
                     {c.date && (
                       <p class="mono date">
@@ -111,7 +111,7 @@ const groups = CERT_STATUS.map((status) => ({
     object-fit: contain;
   }
 
-  .cert h3 {
+  .cert .card-title {
     font-size: var(--text-base);
   }
 
