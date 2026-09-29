@@ -1,0 +1,4 @@
+# Configuración de gitleaks: reglas por defecto.
+# Si algún día hay un falso positivo, añádelo aquí en [allowlist] con su justificación.
+[extend]
+useDefault = true
