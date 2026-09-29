@@ -1,0 +1,10 @@
+# Idiomas con nivel MCER: A1, A2, B1, B2, C1, C2 o native.
+# certificate es opcional (p. ej. el nombre del título oficial).
+
+languages:
+  - language: { es: Español, en: Spanish }
+    level: native   # [EJEMPLO] confirma
+
+  - language: { es: Inglés, en: English }
+    level: B2       # [EJEMPLO] pon tu nivel real
+    certificate: "[EJEMPLO] Certificado oficial, si lo tienes"

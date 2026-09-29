@@ -1,0 +1,15 @@
+# Stack agrupado por áreas. Se muestra como chips, sin niveles ni porcentajes.
+# Pon solo lo que puedas defender en una entrevista técnica.
+
+groups:
+  - area: { es: "[EJEMPLO] Sistemas", en: "[EJEMPLO] Systems" }
+    items: ["[EJEMPLO] Tecnología A", "[EJEMPLO] Tecnología B"]
+
+  - area: { es: "[EJEMPLO] Redes", en: "[EJEMPLO] Networking" }
+    items: ["[EJEMPLO] Tecnología C", "[EJEMPLO] Tecnología D"]
+
+  - area: { es: "[EJEMPLO] Seguridad", en: "[EJEMPLO] Security" }
+    items: ["[EJEMPLO] Tecnología E", "[EJEMPLO] Tecnología F"]
+
+  - area: { es: "[EJEMPLO] Automatización y DevSecOps", en: "[EJEMPLO] Automation & DevSecOps" }
+    items: ["[EJEMPLO] Tecnología G", "[EJEMPLO] Tecnología H"]

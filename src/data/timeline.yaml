@@ -1,0 +1,21 @@
+# Línea temporal de /about. Orden: la más reciente primero.
+#   start / end: "AAAA" o "AAAA-MM" (entre comillas). Omite `end` si sigue en curso.
+#   description: una línea opcional.
+
+experience:
+  - title: { es: "[EJEMPLO] Puesto actual", en: "[EJEMPLO] Current role" }
+    org: "[EJEMPLO] Empresa (o descripción genérica si no puedes nombrarla)"
+    start: "2023-01"
+    description:
+      es: "[EJEMPLO] Una línea sobre responsabilidades o alcance, sin datos confidenciales."
+      en: "[EJEMPLO] One line about scope, without confidential details."
+
+education:
+  - title: { es: "[EJEMPLO] Máster en ciberseguridad", en: "[EJEMPLO] MSc in Cybersecurity" }
+    org: "[EJEMPLO] Universidad"
+    start: "2025-09"
+
+  - title: { es: "[EJEMPLO] Titulación anterior", en: "[EJEMPLO] Previous degree" }
+    org: "[EJEMPLO] Centro"
+    start: "2019-09"
+    end: "2022-06"

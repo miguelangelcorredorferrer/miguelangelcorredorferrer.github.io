@@ -1,0 +1,40 @@
+# Perfil: datos de la cabecera, el hero y el contacto.
+# Los textos traducibles tienen `es` (obligatorio) y `en` (opcional; si falta se usa `es`).
+# Todo lo marcado con [EJEMPLO] debe sustituirse: `npm run check:content` falla mientras quede alguno.
+
+name: Miguel Ángel Corredor Ferrer
+
+headline:
+  es: "[EJEMPLO] Titular profesional, p. ej. tu rol actual y hacia dónde vas"
+  en: "[EJEMPLO] Professional headline, e.g. your current role and direction"
+
+# 1–2 líneas de posicionamiento bajo el titular.
+positioning:
+  es: "[EJEMPLO] Una o dos frases sobre qué problemas resuelves y con qué enfoque."
+  en: "[EJEMPLO] One or two sentences on what problems you solve and how."
+
+# Línea opcional "Actualmente…". Bórrala entera para ocultarla.
+currently:
+  es: "[EJEMPLO] Qué estás haciendo ahora (máster, certificación, proyecto)."
+  en: "[EJEMPLO] What you are working on right now."
+
+# Párrafo corto del bloque "Sobre mí".
+about:
+  es: "[EJEMPLO] Párrafo breve: experiencia, contexto y qué te interesa. Tres o cuatro líneas como máximo."
+  en: "[EJEMPLO] Short paragraph: experience, context and interests. Three or four lines at most."
+
+links:
+  linkedin: https://www.linkedin.com/in/tu-usuario   # [EJEMPLO]
+  github: https://github.com/tu-usuario             # [EJEMPLO]
+
+# El correo se guarda partido y nunca se imprime completo en el HTML:
+# el navegador lo reconstruye con JS al pulsar "Mostrar correo".
+# Borra el bloque entero si prefieres ofrecer solo LinkedIn y GitHub.
+email:
+  user: tu.usuario        # [EJEMPLO]
+  domain: example.com     # [EJEMPLO]
+
+# Rutas dentro de public/. El comprobador falla si el archivo no existe.
+cv:
+  es: /cv/cv-es.pdf
+  en: /cv/cv-en.pdf

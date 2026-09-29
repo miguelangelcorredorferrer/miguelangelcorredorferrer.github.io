@@ -1,0 +1,23 @@
+# Certificaciones.
+#   status: obtained | in-progress | planned
+#   date: "AAAA" o "AAAA-MM" (entre comillas). En in-progress, fecha prevista (opcional).
+#   credentialUrl: enlace de verificación (opcional).
+#   badge: nombre de archivo dentro de src/assets/badges/ (opcional; png, jpg, webp o svg).
+# Las `planned` no se muestran salvo que showPlanned sea true.
+
+showPlanned: false
+
+certs:
+  - name: "[EJEMPLO] Certificación obtenida"
+    issuer: "[EJEMPLO] Entidad emisora"
+    status: obtained
+    date: "2025-01"
+    credentialUrl: https://example.com/verify   # [EJEMPLO]
+
+  - name: "[EJEMPLO] Certificación en curso"
+    issuer: "[EJEMPLO] Entidad emisora"
+    status: in-progress
+
+  - name: "[EJEMPLO] Certificación planificada (oculta con showPlanned: false)"
+    issuer: "[EJEMPLO] Entidad emisora"
+    status: planned
