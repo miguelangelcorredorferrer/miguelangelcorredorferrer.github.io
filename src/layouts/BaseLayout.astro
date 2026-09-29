@@ -3,7 +3,7 @@ import '@/styles/fonts.css';
 import '@/styles/global.css';
 import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
-import { DEFAULT_LOCALE, LOCALES, useTranslations, type Locale } from '@/i18n';
+import { DEFAULT_LOCALE, LOCALES, ogLocale, otherLocale, useTranslations, type Locale } from '@/i18n';
 import { pagePath, stripLocale, withBase } from '@/lib/urls';
 import { profile } from '@/lib/data';
 
@@ -12,23 +12,50 @@ interface Props {
   /** Título de la página (sin el nombre del sitio). Omitir en la home. */
   title?: string;
   description?: string;
+  /** 'article' en proyectos y writeups. */
+  type?: 'website' | 'article';
+  /** Ruta canónica si difiere de la actual (p. ej. entrada mostrada como fallback). */
+  canonicalPath?: string;
+  /** Imagen para vistas previas; por defecto public/og/default.png (1200×630). */
+  image?: string;
+  imageAlt?: string;
+  /** Datos estructurados JSON-LD adicionales. */
+  jsonLd?: Record<string, unknown>;
   /** Destino del selector de idioma si la página no tiene equivalente directo. */
   switchHref?: string;
   /** Sin alternativas hreflang (p. ej. 404). */
   noAlternates?: boolean;
+  noindex?: boolean;
 }
 
-const { lang, title, description, switchHref, noAlternates = false } = Astro.props;
-const route = stripLocale(Astro.url.pathname);
-const alternates = noAlternates
-  ? []
-  : [
-      ...LOCALES.map((l) => ({ hreflang: l, href: new URL(pagePath(l, route), Astro.site).href })),
-      { hreflang: 'x-default', href: new URL(pagePath(DEFAULT_LOCALE, route), Astro.site).href },
-    ];
+const {
+  lang,
+  title,
+  description,
+  type = 'website',
+  canonicalPath,
+  image = withBase('/og/default.png'),
+  imageAlt = profile.name,
+  jsonLd,
+  switchHref,
+  noAlternates = false,
+  noindex = false,
+} = Astro.props;
+
 const t = useTranslations(lang);
 const fullTitle = title ? `${title} · ${profile.name}` : profile.name;
 const metaDescription = description ?? t.meta.siteDescription;
+const absolute = (path: string) => new URL(path, Astro.site).href;
+
+const route = stripLocale(Astro.url.pathname);
+const canonical = absolute(canonicalPath ?? Astro.url.pathname);
+// Las páginas fallback apuntan con canonical al original: sin hreflang para no contradecirse.
+const alternates = noAlternates || canonicalPath
+  ? []
+  : [
+      ...LOCALES.map((l) => ({ hreflang: l, href: absolute(pagePath(l, route)) })),
+      { hreflang: 'x-default', href: absolute(pagePath(DEFAULT_LOCALE, route)) },
+    ];
 
 /*
  * CSP por <meta>: GitHub Pages no permite cabeceras HTTP propias, así que
@@ -48,6 +75,14 @@ const csp = [
   "form-action 'none'",
   'upgrade-insecure-requests',
 ].join('; ');
+
+/*
+ * Analítica: desactivada por defecto. Si algún día la quieres, usa una opción sin
+ * cookies y respetuosa con la privacidad (p. ej. GoatCounter o Plausible autoalojado):
+ *   1. Añade aquí <script is:inline defer src="https://TU-DOMINIO-DE-ANALITICA/script.js"></script>
+ *   2. Añade ese origen a script-src y connect-src en la CSP de arriba.
+ *   3. Menciónalo en el pie ("sin rastreadores" dejaría de ser cierto).
+ */
 ---
 
 <!doctype html>
@@ -59,10 +94,39 @@ const csp = [
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>{fullTitle}</title>
     <meta name="description" content={metaDescription} />
+    <meta name="author" content={profile.name} />
     <meta name="color-scheme" content="dark light" />
-    <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
-    <script is:inline src={withBase('/js/theme-init.js')}></script>
+    {noindex && <meta name="robots" content="noindex" />}
+    {!noindex && <link rel="canonical" href={canonical} />}
     {alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
+
+    <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
+    <link rel="apple-touch-icon" href={withBase('/apple-touch-icon.png')} />
+    <link rel="sitemap" href={withBase('/sitemap-index.xml')} />
+
+    <!-- Open Graph / LinkedIn -->
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={profile.name} />
+    <meta property="og:title" content={title ?? profile.name} />
+    <meta property="og:description" content={metaDescription} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={ogLocale[lang]} />
+    <meta property="og:locale:alternate" content={ogLocale[otherLocale(lang)]} />
+    <meta property="og:image" content={absolute(image)} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={imageAlt} />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title ?? profile.name} />
+    <meta name="twitter:description" content={metaDescription} />
+    <meta name="twitter:image" content={absolute(image)} />
+    <meta name="twitter:image:alt" content={imageAlt} />
+
+    {jsonLd && <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd).replace(/</g, '\u003c')} />}
+
+    <script is:inline src={withBase('/js/theme-init.js')}></script>
     <slot name="head" />
   </head>
   <body>

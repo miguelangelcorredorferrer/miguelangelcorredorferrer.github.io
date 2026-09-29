@@ -28,7 +28,13 @@ const links = [
 const display = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '');
 ---
 
-<BaseLayout lang={lang} title={data.title} description={data.summary}>
+<BaseLayout
+  lang={lang}
+  title={data.title}
+  description={data.summary}
+  type="article"
+  canonicalPath={item.isFallback ? pagePath(item.contentLang, `projects/${item.slug}`) : undefined}
+>
   <article lang={item.contentLang}>
     <EntryHeader
       lang={lang}

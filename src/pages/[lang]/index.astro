@@ -20,9 +20,19 @@ const featured = projects.filter((p) => p.entry.data.featured);
 const shownProjects = (featured.length ? featured : projects).slice(0, 4);
 const latestWriteups = (await getWriteups(lang)).slice(0, 3);
 const certs = visibleCerts.filter((c) => c.status !== 'planned');
+
+const sameAs = [profile.links.linkedin, profile.links.github].filter(Boolean);
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: profile.name,
+  url: new URL(pagePath(lang), Astro.site).href,
+  description: pick(profile.positioning, lang),
+  ...(sameAs.length ? { sameAs } : {}),
+};
 ---
 
-<BaseLayout lang={lang}>
+<BaseLayout lang={lang} jsonLd={person}>
   <!-- 1. Hero -->
   <section class="hero" aria-labelledby="hero-title">
     <p class="eyebrow" aria-hidden="true">~$ whoami</p>

@@ -22,7 +22,13 @@ const { Content, headings } = await render(item.entry);
 const minutes = readingTime(item.entry.body);
 ---
 
-<BaseLayout lang={lang} title={`${data.name} · ${data.platform}`} description={data.summary}>
+<BaseLayout
+  lang={lang}
+  title={`${data.name} · ${data.platform}`}
+  description={data.summary}
+  type="article"
+  canonicalPath={item.isFallback ? pagePath(item.contentLang, `writeups/${item.slug}`) : undefined}
+>
   <article lang={item.contentLang}>
     <EntryHeader
       lang={lang}

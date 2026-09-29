@@ -11,7 +11,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "check:content": "node scripts/check-content.mjs"
+    "check:content": "node scripts/check-content.mjs",
+    "og": "node scripts/generate-og.mjs"
   },
   "dependencies": {
     "@astrojs/check": "0.9.10",

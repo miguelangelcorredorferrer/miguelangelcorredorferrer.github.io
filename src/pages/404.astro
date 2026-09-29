@@ -11,7 +11,7 @@ const es = useTranslations('es');
 const en = useTranslations('en');
 ---
 
-<BaseLayout lang="es" title={`404 · ${es.notFound.title}`} description={es.notFound.text} switchHref={pagePath('en')} noAlternates>
+<BaseLayout lang="es" title={`404 · ${es.notFound.title}`} description={es.notFound.text} switchHref={pagePath('en')} noAlternates noindex>
   <section class="not-found">
     <p class="code mono" aria-hidden="true">~$ cd ./ruta<br />bash: cd: No such file or directory</p>
     <h1>{es.notFound.title}</h1>
