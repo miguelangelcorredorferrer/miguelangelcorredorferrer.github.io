@@ -1,0 +1,22 @@
+# dependencias y build
+node_modules/
+dist/
+.astro/
+
+# generado en build
+src/styles/generated/
+
+# entorno
+.env
+.env.*
+!.env.example
+
+# sistema / editores
+.DS_Store
+Thumbs.db
+*.log
+.vscode/*
+!.vscode/extensions.json
+
+# informes locales
+lighthouse/
