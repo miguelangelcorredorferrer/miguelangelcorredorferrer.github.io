@@ -105,9 +105,18 @@ export const languagesFileSchema = z.object({
   ),
 });
 
+export const SKILL_ICONS = ['network', 'server', 'shield', 'cloud', 'code', 'terminal'] as const;
+
 export const skillsFileSchema = z.object({
-  /** Cada elemento: texto (igual en ambos idiomas) o { es, en }. */
-  groups: z.array(z.object({ area: localized, items: z.array(z.union([text, localized])).min(1) })),
+  groups: z.array(
+    z.object({
+      area: localized,
+      /** Icono del área (opcional): network | server | shield | cloud | code | terminal */
+      icon: z.enum(SKILL_ICONS).optional(),
+      /** Cada elemento: texto (igual en ambos idiomas) o { es, en }. */
+      items: z.array(z.union([text, localized])).min(1),
+    }),
+  ),
 });
 
 export const profileSchema = z.object({

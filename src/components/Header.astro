@@ -100,11 +100,21 @@ const cv = cvHref(lang);
     display: inline-flex;
     align-items: baseline;
     gap: var(--space-2);
+    min-width: 0;
     margin-right: auto;
     color: var(--text);
     font-weight: 600;
     text-decoration: none;
     white-space: nowrap;
+  }
+
+  /* Móvil: el nombre completo reduce tamaño y puede partirse en dos líneas. */
+  @media (max-width: 519.98px) {
+    .brand {
+      font-size: var(--text-sm);
+      line-height: 1.25;
+      white-space: normal;
+    }
   }
 
   .prompt {

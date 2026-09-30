@@ -3,8 +3,7 @@
 # Los valores de ejemplo llevan la marca EJEMPLO entre corchetes: `npm run check:content` falla mientras quede alguno.
 
 name: Miguel Ángel Corredor Ferrer
-# Versión corta que aparece en la cabecera. Ajústala o bórrala (se usará `name`).
-shortName: Miguel Corredor
+# shortName (opcional): versión corta para la cabecera. Sin él se muestra `name` completo.
 
 headline:
   es: "Administrador de sistemas y redes · Blue Team y seguridad de sistemas"

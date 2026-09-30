@@ -1,8 +1,9 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Timeline from '@/components/Timeline.astro';
+import SkillsGrid from '@/components/SkillsGrid.astro';
 import { localeStaticPaths, pick, useTranslations, type Locale } from '@/i18n';
-import { profile, skills, timeline } from '@/lib/data';
+import { profile, timeline } from '@/lib/data';
 
 export const getStaticPaths = localeStaticPaths;
 
@@ -38,22 +39,7 @@ const intro = pick(profile.about, lang);
 
   <section class="section" aria-labelledby="stack-title">
     <h2 id="stack-title" class="section-title">{t.about.stack}</h2>
-    <dl class="skills">
-      {
-        skills.map((group) => (
-          <div>
-            <dt class="mono">{pick(group.area, lang)}</dt>
-            <dd>
-              <ul class="chips" role="list">
-                {group.items.map((item) => (
-                  <li class="chip">{pick(item, lang)}</li>
-                ))}
-              </ul>
-            </dd>
-          </div>
-        ))
-      }
-    </dl>
+    <SkillsGrid lang={lang} />
   </section>
 </BaseLayout>
 
@@ -67,19 +53,4 @@ const intro = pick(profile.about, lang);
     margin-bottom: var(--space-5);
   }
 
-  .skills {
-    display: grid;
-    gap: var(--space-4) var(--space-6);
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
-  }
-
-  .skills dt {
-    margin-bottom: var(--space-2);
-    font-size: var(--text-xs);
-    color: var(--text-subtle);
-  }
-
-  .skills dd {
-    margin: 0;
-  }
 </style>

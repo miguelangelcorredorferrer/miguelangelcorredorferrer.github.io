@@ -1,0 +1,127 @@
+---
+/** Stack agrupado por áreas: una tarjeta por área con icono y chips. Sin niveles. */
+import Icon from './Icon.astro';
+import { pick, type Locale } from '@/i18n';
+import { skills } from '@/lib/data';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+---
+
+<ul class="skills" role="list">
+  {
+    skills.map((group) => (
+      <li class="skill-card">
+        <div class="skill-head">
+          <span class="skill-icon" aria-hidden="true">
+            <Icon name={group.icon ?? 'terminal'} size={20} />
+          </span>
+          <h3>{pick(group.area, lang)}</h3>
+          <span class="count mono" aria-hidden="true">
+            {String(group.items.length).padStart(2, '0')}
+          </span>
+        </div>
+        <ul class="skill-chips" role="list">
+          {group.items.map((item) => (
+            <li>{pick(item, lang)}</li>
+          ))}
+        </ul>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .skills {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  }
+
+  .skill-card {
+    position: relative;
+    padding: var(--space-5);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition:
+      border-color var(--dur) var(--ease),
+      box-shadow var(--dur) var(--ease);
+  }
+
+  /* Filete de acento arriba de cada tarjeta. */
+  .skill-card::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent 70%);
+    opacity: 0.7;
+  }
+
+  .skill-card:hover {
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .skill-head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+
+  .skill-icon {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    flex: none;
+    border-radius: var(--radius-sm);
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+
+  h3 {
+    font-size: var(--text-base);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .count {
+    margin-left: auto;
+    font-size: var(--text-xs);
+    color: var(--text-subtle);
+  }
+
+  .skill-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .skill-chips li {
+    padding: 0.3rem 0.7rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface-2);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    line-height: 1.5;
+    transition:
+      border-color var(--dur) var(--ease),
+      color var(--dur) var(--ease),
+      background-color var(--dur) var(--ease);
+  }
+
+  .skill-chips li:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+</style>

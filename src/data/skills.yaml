@@ -1,10 +1,12 @@
 # Stack agrupado por áreas. Se muestra como chips, sin niveles ni porcentajes.
+# icon (opcional): network | server | shield | cloud | code | terminal
 # Cada elemento puede ser un texto (igual en ambos idiomas) o { es: …, en: … }.
 # Pon solo lo que puedas defender en una entrevista técnica.
 # Fuente: tu CV y las aptitudes de LinkedIn.
 
 groups:
   - area: { es: Redes, en: Networking }
+    icon: network
     items:
       - TCP/IP · DNS · NAT
       - SD-WAN
@@ -14,6 +16,7 @@ groups:
       - VoIP (FreePBX/Asterisk, Grandstream)
 
   - area: { es: Sistemas, en: Systems }
+    icon: server
     items:
       - Microsoft 365 / Exchange Online
       - Active Directory
@@ -24,6 +27,7 @@ groups:
       - { es: "Monitorización (CheckMK, Zabbix)", en: "Monitoring (CheckMK, Zabbix)" }
 
   - area: { es: Ciberseguridad, en: Cybersecurity }
+    icon: shield
     items:
       - { es: "Blue Team y seguridad operacional", en: "Blue Team & security operations" }
       - { es: "SGSI (ISO 27001 / 27002)", en: "ISMS (ISO 27001 / 27002)" }
@@ -34,6 +38,7 @@ groups:
       - Kali Linux
 
   - area: { es: "Cloud, automatización y programación", en: "Cloud, automation & programming" }
+    icon: cloud
     items:
       - { es: "Fundamentos de Cloud (ICCA)", en: "Cloud fundamentals (ICCA)" }
       - Docker

@@ -4,8 +4,9 @@ import Icon from '@/components/Icon.astro';
 import ProjectCard from '@/components/ProjectCard.astro';
 import WriteupCard from '@/components/WriteupCard.astro';
 import ContactLinks from '@/components/ContactLinks.astro';
+import SkillsGrid from '@/components/SkillsGrid.astro';
 import { formatYearMonth, localeStaticPaths, pick, useTranslations, type Locale } from '@/i18n';
-import { cvHref, languages, profile, skills, visibleCerts } from '@/lib/data';
+import { cvHref, languages, profile, visibleCerts } from '@/lib/data';
 import { getProjects, getWriteups } from '@/lib/content';
 import { profileImage } from '@/lib/images';
 import { Picture } from 'astro:assets';
@@ -46,8 +47,8 @@ const person = {
           class="photo"
           src={photo}
           alt={profile.name}
-          width={176}
-          height={176}
+          width={208}
+          height={208}
           densities={[1, 2]}
           formats={['avif', 'webp']}
           loading="eager"
@@ -84,22 +85,7 @@ const person = {
       <a class="link-arrow" href={pagePath(lang, 'about')}>{t.home.seeDetails}</a>
     </div>
     <p class="about-text">{pick(profile.about, lang)}</p>
-    <dl class="skills">
-      {
-        skills.map((group) => (
-          <div class="skill-group">
-            <dt class="mono">{pick(group.area, lang)}</dt>
-            <dd>
-              <ul class="chips" role="list">
-                {group.items.map((item) => (
-                  <li class="chip">{pick(item, lang)}</li>
-                ))}
-              </ul>
-            </dd>
-          </div>
-        ))
-      }
-    </dl>
+    <SkillsGrid lang={lang} />
   </section>
 
   <!-- 3. Proyectos destacados -->
@@ -221,20 +207,27 @@ const person = {
   }
 
   @media (min-width: 900px) {
+    /* La foto se centra en el espacio que deja el texto, no pegada al borde. */
     .hero.has-photo {
-      grid-template-columns: minmax(0, 52rem) auto;
+      grid-template-columns: minmax(0, 44rem) minmax(240px, 1fr);
     }
 
     .hero > :global(picture) {
       grid-column: 2;
       grid-row: 1 / span 8;
       align-self: center;
+      justify-self: center;
       margin-bottom: 0;
     }
 
     .hero :global(.photo) {
-      width: 176px;
-      height: 176px;
+      width: 208px;
+      height: 208px;
+      border: 2px solid var(--border-strong);
+      box-shadow:
+        0 0 0 6px var(--bg),
+        0 0 0 7px var(--accent-soft),
+        0 12px 32px rgb(0 0 0 / 0.25);
     }
   }
 
@@ -297,21 +290,8 @@ const person = {
     color: var(--text-muted);
   }
 
-  .skills {
-    display: grid;
-    gap: var(--space-4) var(--space-6);
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  .about-text + :global(.skills) {
     margin-top: var(--space-6);
-  }
-
-  .skill-group dt {
-    margin-bottom: var(--space-2);
-    font-size: var(--text-xs);
-    color: var(--text-subtle);
-  }
-
-  .skill-group dd {
-    margin: 0;
   }
 
   .creds {
