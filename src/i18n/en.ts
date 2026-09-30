@@ -90,6 +90,13 @@ export const en: UIStrings = {
     experience: 'Experience',
     education: 'Education',
     present: 'present',
+    duration: (months: number) => {
+      const y = Math.floor(months / 12);
+      const m = months % 12;
+      const ys = y ? (y === 1 ? '1 yr' : `${y} yrs`) : '';
+      const ms = m ? (m === 1 ? '1 mo' : `${m} mos`) : '';
+      return [ys, ms].filter(Boolean).join(' ') || '1 mo';
+    },
     stack: 'Stack',
   },
   certs: {
@@ -97,6 +104,8 @@ export const en: UIStrings = {
     intro: 'Certifications obtained and in progress, with a verification link where available.',
     status: { obtained: 'Obtained', 'in-progress': 'In progress', planned: 'Planned' },
     credential: 'View credential',
+    issued: 'Issued',
+    expires: 'Expires',
     empty: 'No certifications published yet.',
     languagesTitle: 'Languages',
     levels: { A1: 'A1', A2: 'A2', B1: 'B1', B2: 'B2', C1: 'C1', C2: 'C2', native: 'Native' },

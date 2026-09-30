@@ -7,6 +7,8 @@ import ContactLinks from '@/components/ContactLinks.astro';
 import { formatYearMonth, localeStaticPaths, pick, useTranslations, type Locale } from '@/i18n';
 import { cvHref, languages, profile, skills, visibleCerts } from '@/lib/data';
 import { getProjects, getWriteups } from '@/lib/content';
+import { profileImage } from '@/lib/images';
+import { Picture } from 'astro:assets';
 import { pagePath } from '@/lib/urls';
 
 export const getStaticPaths = localeStaticPaths;
@@ -21,6 +23,7 @@ const shownProjects = (featured.length ? featured : projects).slice(0, 4);
 const latestWriteups = (await getWriteups(lang)).slice(0, 3);
 const certs = visibleCerts.filter((c) => c.status !== 'planned');
 
+const photo = profileImage(profile.photo);
 const sameAs = [profile.links.linkedin, profile.links.github].filter(Boolean);
 const person = {
   '@context': 'https://schema.org',
@@ -29,15 +32,33 @@ const person = {
   url: new URL(pagePath(lang), Astro.site).href,
   description: pick(profile.positioning, lang),
   ...(sameAs.length ? { sameAs } : {}),
+  ...(profile.location ? { homeLocation: { '@type': 'Place', name: pick(profile.location, lang) } } : {}),
+  ...(photo ? { image: new URL(photo.src, Astro.site).href } : {}),
 };
 ---
 
 <BaseLayout lang={lang} jsonLd={person}>
   <!-- 1. Hero -->
-  <section class="hero" aria-labelledby="hero-title">
+  <section class:list={['hero', { 'has-photo': photo }]} aria-labelledby="hero-title">
+    {
+      photo && (
+        <Picture
+          class="photo"
+          src={photo}
+          alt={profile.name}
+          width={176}
+          height={176}
+          densities={[1, 2]}
+          formats={['avif', 'webp']}
+          loading="eager"
+          fetchpriority="high"
+        />
+      )
+    }
     <p class="eyebrow" aria-hidden="true">~$ whoami</p>
     <h1 id="hero-title">{profile.name}</h1>
     <p class="headline">{pick(profile.headline, lang)}</p>
+    {profile.location && <p class="location mono">{pick(profile.location, lang)}</p>}
     <p class="lead">{pick(profile.positioning, lang)}</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href={cv.href} hreflang={cv.lang} download>
@@ -71,7 +92,7 @@ const person = {
             <dd>
               <ul class="chips" role="list">
                 {group.items.map((item) => (
-                  <li class="chip">{item}</li>
+                  <li class="chip">{pick(item, lang)}</li>
                 ))}
               </ul>
             </dd>
@@ -180,6 +201,49 @@ const person = {
     max-width: 52rem;
   }
 
+  .hero.has-photo {
+    max-width: none;
+    display: grid;
+    column-gap: var(--space-7);
+    grid-template-columns: minmax(0, 52rem);
+  }
+
+  .hero > :global(picture) {
+    margin-bottom: var(--space-5);
+  }
+
+  .hero :global(.photo) {
+    width: 112px;
+    height: 112px;
+    border-radius: 50%;
+    border: 1px solid var(--border-strong);
+    object-fit: cover;
+  }
+
+  @media (min-width: 900px) {
+    .hero.has-photo {
+      grid-template-columns: minmax(0, 52rem) auto;
+    }
+
+    .hero > :global(picture) {
+      grid-column: 2;
+      grid-row: 1 / span 8;
+      align-self: center;
+      margin-bottom: 0;
+    }
+
+    .hero :global(.photo) {
+      width: 176px;
+      height: 176px;
+    }
+  }
+
+  .location {
+    margin-top: var(--space-2);
+    font-size: var(--text-xs);
+    color: var(--text-subtle);
+  }
+
   .hero h1 {
     margin-top: var(--space-3);
     font-size: var(--text-3xl);
@@ -236,7 +300,7 @@ const person = {
   .skills {
     display: grid;
     gap: var(--space-4) var(--space-6);
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
     margin-top: var(--space-6);
   }
 

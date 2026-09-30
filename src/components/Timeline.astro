@@ -1,6 +1,12 @@
 ---
+/**
+ * Línea temporal vertical: un nodo (logo o iniciales) por entrada unido por una línea.
+ * La entrada en curso (sin `end`) se resalta con el color de acento.
+ */
+import { Image } from 'astro:assets';
 import { formatYearMonth, pick, useTranslations, type Locale } from '@/i18n';
 import type { TimelineEntry } from '@/content/schemas';
+import { logoImage } from '@/lib/images';
 
 interface Props {
   entries: TimelineEntry[];
@@ -9,24 +15,57 @@ interface Props {
 
 const { entries, lang } = Astro.props;
 const t = useTranslations(lang);
+
+const initials = (org: string) =>
+  org
+    .split(/\s+/)
+    .map((w) => w[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
+
+/** Meses entre dos "AAAA-MM" (ambos incluidos, como LinkedIn); sin fin → mes actual. */
+const months = (start: string, end?: string) => {
+  const [sy, sm = '1'] = start.split('-');
+  const now = new Date();
+  const [ey, em] = end ? end.split('-') : [String(now.getUTCFullYear()), String(now.getUTCMonth() + 1)];
+  return (Number(ey) - Number(sy)) * 12 + (Number(em ?? '12') - Number(sm)) + 1;
+};
 ---
 
 <ol class="timeline" role="list">
   {
-    entries.map((e) => (
-      <li>
-        <p class="when mono">
-          <time datetime={e.start}>{formatYearMonth(e.start, lang)}</time>
-          {' – '}
-          {e.end ? <time datetime={e.end}>{formatYearMonth(e.end, lang)}</time> : t.about.present}
-        </p>
-        <div class="what">
-          <h3>{pick(e.title, lang)}</h3>
-          <p class="org">{e.org}</p>
-          {e.description && <p class="desc">{pick(e.description, lang)}</p>}
-        </div>
-      </li>
-    ))
+    entries.map((e) => {
+      const logo = logoImage(e.logo);
+      const current = !e.end;
+      const hasMonths = e.start.includes('-');
+      return (
+        <li class:list={['item', { current }]}>
+          <span class="node" aria-hidden="true">
+            {logo ? (
+              <Image class="logo" src={logo} alt="" width={44} height={44} />
+            ) : (
+              <span class="logo logo-fallback mono">{initials(e.org)}</span>
+            )}
+          </span>
+          <div class="body">
+            <p class="when mono">
+              <time datetime={e.start}>{formatYearMonth(e.start, lang)}</time>
+              {' – '}
+              {e.end ? (
+                <time datetime={e.end}>{formatYearMonth(e.end, lang)}</time>
+              ) : (
+                <span class="now">{t.about.present}</span>
+              )}
+              {hasMonths && <span class="duration"> · {t.about.duration(months(e.start, e.end))}</span>}
+            </p>
+            <h3>{pick(e.title, lang)}</h3>
+            <p class="org">{e.org}</p>
+            {e.description && <p class="desc">{pick(e.description, lang)}</p>}
+          </div>
+        </li>
+      );
+    })
   }
 </ol>
 
@@ -35,30 +74,70 @@ const t = useTranslations(lang);
     max-width: var(--measure);
   }
 
-  li {
+  .item {
+    position: relative;
     display: grid;
-    gap: var(--space-1) var(--space-5);
-    padding-block: var(--space-4);
-    border-top: 1px solid var(--border);
+    grid-template-columns: 44px 1fr;
+    gap: var(--space-4);
+    padding-bottom: var(--space-6);
   }
 
-  li:last-child {
-    border-bottom: 1px solid var(--border);
+  /* Línea que une los nodos. */
+  .item:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 21px;
+    top: 52px;
+    bottom: 6px;
+    width: 2px;
+    border-radius: 1px;
+    background: var(--border);
   }
 
-  @media (min-width: 640px) {
-    li {
-      grid-template-columns: 11rem 1fr;
-    }
+  .item:last-child {
+    padding-bottom: 0;
+  }
+
+  .logo {
+    display: block;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid var(--border-strong);
+    background: #fff;
+    object-fit: contain;
+    padding: 3px;
+  }
+
+  .logo-fallback {
+    display: grid;
+    place-items: center;
+    padding: 0;
+    background: var(--surface-2);
+    color: var(--text-muted);
+    font-size: var(--text-xs);
+  }
+
+  .current .logo {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+
+  .body {
+    padding-top: 0.15rem;
   }
 
   .when {
     font-size: var(--text-xs);
     color: var(--text-subtle);
-    padding-top: 0.2rem;
+  }
+
+  .now {
+    color: var(--accent);
   }
 
   h3 {
+    margin-top: var(--space-1);
     font-size: var(--text-base);
     font-weight: 600;
   }

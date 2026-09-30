@@ -276,7 +276,7 @@ main {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   line-height: 1.6;
-  white-space: nowrap;
+  max-width: 100%;
 }
 
 .tag {

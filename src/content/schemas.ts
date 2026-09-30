@@ -83,6 +83,8 @@ export const certsFileSchema = z.object({
         issuer: text,
         status: z.enum(CERT_STATUS),
         date: yearMonth.optional(),
+        /** Fecha de caducidad, si la tiene. */
+        expires: yearMonth.optional(),
         credentialUrl: httpUrl.optional(),
         /** Nombre de archivo dentro de src/assets/badges/ */
         badge: text.optional(),
@@ -104,7 +106,8 @@ export const languagesFileSchema = z.object({
 });
 
 export const skillsFileSchema = z.object({
-  groups: z.array(z.object({ area: localized, items: z.array(text).min(1) })),
+  /** Cada elemento: texto (igual en ambos idiomas) o { es, en }. */
+  groups: z.array(z.object({ area: localized, items: z.array(z.union([text, localized])).min(1) })),
 });
 
 export const profileSchema = z.object({
@@ -112,6 +115,10 @@ export const profileSchema = z.object({
   /** Versión corta para la cabecera (opcional; si falta se usa `name`). */
   shortName: text.optional(),
   headline: localized,
+  /** Ubicación visible en el hero, p. ej. "Córdoba, España". */
+  location: localized.optional(),
+  /** Nombre de archivo dentro de src/assets/profile/ (opcional). */
+  photo: text.optional(),
   positioning: localized,
   currently: localized.optional(),
   about: localized,
@@ -131,6 +138,8 @@ export const profileSchema = z.object({
 const timelineEntry = z.object({
   title: localized,
   org: text,
+  /** Nombre de archivo dentro de src/assets/logos/ (opcional). */
+  logo: text.optional(),
   start: yearMonth,
   /** Omitir si sigue en curso. */
   end: yearMonth.optional(),

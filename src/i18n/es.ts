@@ -88,6 +88,13 @@ export const es = {
     experience: 'Experiencia',
     education: 'Formación',
     present: 'actualidad',
+    duration: (months: number) => {
+      const y = Math.floor(months / 12);
+      const m = months % 12;
+      const ys = y ? (y === 1 ? '1 año' : `${y} años`) : '';
+      const ms = m ? (m === 1 ? '1 mes' : `${m} meses`) : '';
+      return [ys, ms].filter(Boolean).join(' y ') || '1 mes';
+    },
     stack: 'Stack',
   },
   certs: {
@@ -95,6 +102,8 @@ export const es = {
     intro: 'Certificaciones obtenidas y en curso, con enlace de verificación cuando existe.',
     status: { obtained: 'Obtenida', 'in-progress': 'En curso', planned: 'Planificada' },
     credential: 'Ver credencial',
+    issued: 'Expedición',
+    expires: 'Vence',
     empty: 'Todavía no hay certificaciones publicadas.',
     languagesTitle: 'Idiomas',
     levels: { A1: 'A1', A2: 'A2', B1: 'B1', B2: 'B2', C1: 'C1', C2: 'C2', native: 'Nativo' },

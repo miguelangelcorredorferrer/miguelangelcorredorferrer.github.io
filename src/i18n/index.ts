@@ -15,7 +15,8 @@ export const isLocale = (value: unknown): value is Locale =>
 export const otherLocale = (lang: Locale): Locale => (lang === 'es' ? 'en' : 'es');
 
 /** Texto traducible de los YAML: `en` si existe y se pide, si no `es`. */
-export const pick = (value: Localized, lang: Locale): string => (lang === 'en' ? (value.en ?? value.es) : value.es);
+export const pick = (value: Localized | string, lang: Locale): string =>
+  typeof value === 'string' ? value : lang === 'en' ? (value.en ?? value.es) : value.es;
 
 /** Valores para og:locale. */
 export const ogLocale: Record<Locale, string> = { es: 'es_ES', en: 'en_GB' };

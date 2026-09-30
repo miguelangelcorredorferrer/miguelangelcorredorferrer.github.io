@@ -1,40 +1,47 @@
 # Perfil: datos de la cabecera, el hero y el contacto.
 # Los textos traducibles tienen `es` (obligatorio) y `en` (opcional; si falta se usa `es`).
-# Todo lo marcado con [EJEMPLO] debe sustituirse: `npm run check:content` falla mientras quede alguno.
+# Los valores de ejemplo llevan la marca EJEMPLO entre corchetes: `npm run check:content` falla mientras quede alguno.
 
 name: Miguel Ángel Corredor Ferrer
 # Versión corta que aparece en la cabecera. Ajústala o bórrala (se usará `name`).
 shortName: Miguel Corredor
 
 headline:
-  es: "[EJEMPLO] Titular profesional, p. ej. tu rol actual y hacia dónde vas"
-  en: "[EJEMPLO] Professional headline, e.g. your current role and direction"
+  es: "Administrador de sistemas y redes · Blue Team y seguridad de sistemas"
+  en: "Systems & Network Administrator · Blue Team & Systems Security"
+
+location:
+  es: Córdoba, España
+  en: Córdoba, Spain
+
+# Foto opcional: archivo dentro de src/assets/profile/. Borra la línea para ocultarla.
+photo: photo.jpg
 
 # 1–2 líneas de posicionamiento bajo el titular.
 positioning:
-  es: "[EJEMPLO] Una o dos frases sobre qué problemas resuelves y con qué enfoque."
-  en: "[EJEMPLO] One or two sentences on what problems you solve and how."
+  es: "Ingeniero informático especializado en infraestructura TI. Administro sistemas y redes en un MSP mientras curso un máster en ciberseguridad, con foco en Blue Team, seguridad de sistemas y DevSecOps."
+  en: "Computer engineer specialised in IT infrastructure. I manage systems and networks at an MSP while completing a master's degree in cybersecurity, focused on Blue Team, systems security and DevSecOps."
 
 # Línea opcional "Actualmente…". Bórrala entera para ocultarla.
 currently:
-  es: "[EJEMPLO] Qué estás haciendo ahora (máster, certificación, proyecto)."
-  en: "[EJEMPLO] What you are working on right now."
+  es: "Técnico de Redes y Sistemas en Tekpyme y cursando el Máster en Seguridad de las TIC (Universidad Europea)."
+  en: "Network & Systems Technician at Tekpyme and studying for a Master's in ICT Security (Universidad Europea)."
 
 # Párrafo corto del bloque "Sobre mí".
 about:
-  es: "[EJEMPLO] Párrafo breve: experiencia, contexto y qué te interesa. Tres o cuatro líneas como máximo."
-  en: "[EJEMPLO] Short paragraph: experience, context and interests. Three or four lines at most."
+  es: "Ingeniero informático por la Universidad de Córdoba, especialidad en Redes y Sistemas. Trabajo como técnico de redes y sistemas en un proveedor de servicios gestionados, donde administro infraestructura de clientes, y complemento esa base con un máster en ciberseguridad y las certificaciones eJPTv2 e ICCA de INE Security. Mi objetivo es orientar mi carrera hacia la seguridad, DevSecOps y la infraestructura."
+  en: "Computer engineer from the University of Córdoba, specialising in networks and systems. I work as a network and systems technician at a managed service provider, looking after client infrastructure, and build on that foundation with a master's in cybersecurity and the eJPTv2 and ICCA certifications from INE Security. I am steering my career towards security, DevSecOps and infrastructure."
 
 links:
-  linkedin: https://www.linkedin.com/in/tu-usuario   # [EJEMPLO]
-  github: https://github.com/tu-usuario             # [EJEMPLO]
+  linkedin: https://www.linkedin.com/in/miguel-angel-corredor-ferrer/
+  github: https://github.com/miguelangelcorredorferrer
 
 # El correo se guarda partido y nunca se imprime completo en el HTML:
 # el navegador lo reconstruye con JS al pulsar "Mostrar correo".
 # Borra el bloque entero si prefieres ofrecer solo LinkedIn y GitHub.
 email:
-  user: tu.usuario        # [EJEMPLO]
-  domain: example.com     # [EJEMPLO]
+  user: miguelangelcorredor07
+  domain: gmail.com
 
 # Rutas dentro de public/. El comprobador falla si el archivo no existe.
 cv:

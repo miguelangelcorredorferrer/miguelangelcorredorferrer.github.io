@@ -46,7 +46,7 @@ const intro = pick(profile.about, lang);
             <dd>
               <ul class="chips" role="list">
                 {group.items.map((item) => (
-                  <li class="chip">{item}</li>
+                  <li class="chip">{pick(item, lang)}</li>
                 ))}
               </ul>
             </dd>
@@ -70,7 +70,7 @@ const intro = pick(profile.about, lang);
   .skills {
     display: grid;
     gap: var(--space-4) var(--space-6);
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
   }
 
   .skills dt {

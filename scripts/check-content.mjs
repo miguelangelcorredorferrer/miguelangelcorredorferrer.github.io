@@ -6,7 +6,7 @@
  *  - quedan marcadores [EJEMPLO] (salvo ALLOW_PLACEHOLDERS=1),
  *  - una entrada no cumple su esquema (campos obligatorios, writeup sin `retired: true`…),
  *  - un writeup no tiene la sección "Visión defensiva" / "Defensive view",
- *  - falta un archivo enlazado: CV, portada, imagen del cuerpo o insignia.
+ *  - falta un archivo enlazado: CV, foto, logo, portada, imagen del cuerpo o insignia.
  *
  * Reutiliza los esquemas de src/content/schemas.ts (Node 24 ejecuta TypeScript sin compilar).
  */
@@ -139,6 +139,15 @@ if (profile) {
     if (path && !existsSync(join(ROOT, 'public', path))) {
       fail(join(ROOT, 'src/data/profile.yaml'), `cv.${lang}: no existe public${path}`);
     }
+  }
+}
+if (profile?.photo && !existsSync(join(ROOT, 'src/assets/profile', profile.photo))) {
+  fail(join(ROOT, 'src/data/profile.yaml'), `photo: no existe src/assets/profile/${profile.photo}`);
+}
+const timelineData = data['timeline.yaml'];
+for (const entry of [...(timelineData?.experience ?? []), ...(timelineData?.education ?? [])]) {
+  if (entry.logo && !existsSync(join(ROOT, 'src/assets/logos', entry.logo))) {
+    fail(join(ROOT, 'src/data/timeline.yaml'), `logo de "${entry.org}": no existe src/assets/logos/${entry.logo}`);
   }
 }
 for (const cert of data['certs.yaml']?.certs ?? []) {

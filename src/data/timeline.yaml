@@ -1,21 +1,46 @@
 # Línea temporal de /about. Orden: la más reciente primero.
 #   start / end: "AAAA" o "AAAA-MM" (entre comillas). Omite `end` si sigue en curso.
-#   description: una línea opcional.
+#   logo: archivo dentro de src/assets/logos/ (opcional).
+#   description: una o dos líneas opcionales.
 
 experience:
-  - title: { es: "[EJEMPLO] Puesto actual", en: "[EJEMPLO] Current role" }
-    org: "[EJEMPLO] Empresa (o descripción genérica si no puedes nombrarla)"
-    start: "2023-01"
+  - title: { es: Técnico de Redes y Sistemas L1, en: Network & Systems Technician (L1) }
+    org: Tekpyme
+    logo: tekpyme.png
+    start: "2026-04"
     description:
-      es: "[EJEMPLO] Una línea sobre responsabilidades o alcance, sin datos confidenciales."
-      en: "[EJEMPLO] One line about scope, without confidential details."
+      es: "Jornada completa, híbrido. Gestión de infraestructura TI multi-cliente (MSP): firewalls FortiGate, Sophos y Huawei (VPN, políticas, SD-WAN), virtualización con Proxmox y VMware vSphere, VoIP, Microsoft 365 / Exchange Online, seguridad de correo con Barracuda y monitorización con CheckMK."
+      en: "Full-time, hybrid. Multi-client IT infrastructure management (MSP): FortiGate, Sophos and Huawei firewalls (VPN, policies, SD-WAN), Proxmox and VMware vSphere virtualisation, VoIP, Microsoft 365 / Exchange Online, Barracuda email security and CheckMK monitoring."
+
+  - title: { es: Técnico de Soporte L1, en: IT Support Technician (L1) }
+    org: Tekpyme
+    logo: tekpyme.png
+    start: "2026-01"
+    end: "2026-04"
+    description:
+      es: "Contrato de prácticas, presencial en Córdoba. Soporte técnico multi-cliente y resolución de incidencias de infraestructura."
+      en: "Internship contract, on-site in Córdoba. Multi-client technical support and infrastructure incident resolution."
+
+  - title: { es: Estudiante en prácticas, en: Intern }
+    org: IPROMOR S.L.
+    start: "2025-02"
+    end: "2025-07"
+    description:
+      es: "Administración de sistemas Windows con PowerShell, administración de bases de datos y desarrollo de módulos ERP."
+      en: "Windows systems administration with PowerShell, database administration and ERP module development."
 
 education:
-  - title: { es: "[EJEMPLO] Máster en ciberseguridad", en: "[EJEMPLO] MSc in Cybersecurity" }
-    org: "[EJEMPLO] Universidad"
-    start: "2025-09"
+  - title:
+      es: Máster Universitario en Seguridad de las Tecnologías de la Información y las Comunicaciones
+      en: Master's Degree in Information and Communications Technology Security
+    org: Universidad Europea
+    logo: universidad-europea.png
+    start: "2025-10"   # [EJEMPLO] confirma el mes de inicio
 
-  - title: { es: "[EJEMPLO] Titulación anterior", en: "[EJEMPLO] Previous degree" }
-    org: "[EJEMPLO] Centro"
-    start: "2019-09"
-    end: "2022-06"
+  - title:
+      es: Grado en Ingeniería Informática — Especialidad en Redes y Sistemas
+      en: BSc in Computer Engineering — Networks & Systems track
+    org: Universidad de Córdoba
+    logo: universidad-cordoba.png
+    start: "2021-09"   # [EJEMPLO] fecha real de inicio
+    end: "2025-07"     # [EJEMPLO] fecha real de fin
