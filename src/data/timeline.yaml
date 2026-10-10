@@ -35,12 +35,12 @@ education:
       en: Master's Degree in Information and Communications Technology Security
     org: Universidad Europea
     logo: universidad-europea.png
-    start: "2025-10"   # [EJEMPLO] confirma el mes de inicio
+    start: "2025-10"
 
   - title:
       es: Grado en Ingeniería Informática — Especialidad en Redes y Sistemas
       en: BSc in Computer Engineering — Networks & Systems track
     org: Universidad de Córdoba
     logo: universidad-cordoba.png
-    start: "2021-09"   # [EJEMPLO] fecha real de inicio
-    end: "2025-07"     # [EJEMPLO] fecha real de fin
+    start: "2021-09"
+    end: "2025-07"

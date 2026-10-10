@@ -45,4 +45,3 @@ email:
 # Rutas dentro de public/. El comprobador falla si el archivo no existe.
 cv:
   es: /cv/cv-es.pdf
-  en: /cv/cv-en.pdf
