@@ -95,6 +95,7 @@ for (const [name, schema] of Object.entries(collections)) {
     if (!result.success) reportIssues(file, result.error);
 
     if (typeof parsed.data.cover === 'string') checkLocalPath(file, parsed.data.cover, 'portada');
+    if (typeof parsed.data.download === 'string') checkLocalPath(file, parsed.data.download, 'documento descargable');
     for (const m of parsed.body.matchAll(/!\[[^\]]*\]\(\s*<?([^)\s>]+)>?/g)) checkLocalPath(file, m[1], 'imagen');
     for (const m of parsed.body.matchAll(/<img\b[^>]*\bsrc=["']([^"']+)["']/g)) checkLocalPath(file, m[1], 'imagen');
 

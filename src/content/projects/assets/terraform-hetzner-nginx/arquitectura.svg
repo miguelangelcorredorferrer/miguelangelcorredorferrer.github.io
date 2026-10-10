@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 240" width="720" height="240" role="img" aria-labelledby="t">
+  <title id="t">Terraform on CentOS calls the Hetzner API, which creates a firewall-protected Ubuntu instance running Nginx</title>
+  <rect width="720" height="240" rx="12" fill="#f5f6f8"/>
+  <g font-family="ui-monospace, Menlo, Consolas, monospace" font-size="14" fill="#1d232b" text-anchor="middle">
+    <g fill="none" stroke="#5b6573" stroke-width="1.5">
+      <rect x="20" y="70" width="140" height="70" rx="8"/>
+      <rect x="215" y="70" width="130" height="70" rx="8"/>
+      <rect x="400" y="50" width="300" height="110" rx="8"/>
+      <rect x="415" y="65" width="80" height="80" rx="6"/>
+      <rect x="505" y="65" width="180" height="38" rx="6"/>
+      <rect x="505" y="108" width="180" height="37" rx="6"/>
+      <path d="M160 105h47M345 105h47"/>
+      <path d="M199 99l8 6-8 6M384 99l8 6-8 6"/>
+    </g>
+    <text x="90" y="100">Terraform</text>
+    <text x="90" y="120" font-size="12" fill="#5b6573">CentOS · gh</text>
+    <text x="280" y="100">Hetzner</text>
+    <text x="280" y="120" font-size="12" fill="#5b6573">Cloud API</text>
+    <text x="455" y="100" font-size="13">Firewall</text>
+    <text x="455" y="120" font-size="11" fill="#5b6573">22·80·443</text>
+    <text x="595" y="89" font-size="13">Ubuntu 26.04</text>
+    <text x="595" y="132" font-size="13">Nginx (cloud-init)</text>
+    <text x="360" y="205" font-size="12" fill="#5b6573">init → plan → apply · SSH key pair + API token outside git</text>
+  </g>
+</svg>

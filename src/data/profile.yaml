@@ -6,8 +6,8 @@ name: Miguel Ángel Corredor Ferrer
 # shortName (opcional): versión corta para la cabecera. Sin él se muestra `name` completo.
 
 headline:
-  es: "Administrador de sistemas y redes · Blue Team y seguridad de sistemas"
-  en: "Systems & Network Administrator · Blue Team & Systems Security"
+  es: "Ingeniero Informático | Administrador de Sistemas y Redes | Infraestructura TI y Seguridad | Máster en Ciberseguridad | eJPTv2 & ICCA"
+  en: "Computer Engineer | Systems & Network Administrator | IT Infrastructure & Security | MSc in Cybersecurity | eJPTv2 & ICCA"
 
 location:
   es: Córdoba, España
@@ -18,8 +18,8 @@ photo: photo.jpg
 
 # 1–2 líneas de posicionamiento bajo el titular.
 positioning:
-  es: "Ingeniero informático especializado en infraestructura TI. Administro sistemas y redes en un MSP mientras curso un máster en ciberseguridad, con foco en Blue Team, seguridad de sistemas y DevSecOps."
-  en: "Computer engineer specialised in IT infrastructure. I manage systems and networks at an MSP while completing a master's degree in cybersecurity, focused on Blue Team, systems security and DevSecOps."
+  es: "Administro la infraestructura de redes y sistemas de clientes en un MSP y estudio un máster en ciberseguridad. Me interesa unir infraestructura y seguridad: automatización, bastionado y detección."
+  en: "I manage client network and systems infrastructure at an MSP while studying a master's in cybersecurity. I am interested in bringing infrastructure and security together: automation, hardening and detection."
 
 # Línea opcional "Actualmente…". Bórrala entera para ocultarla.
 currently:

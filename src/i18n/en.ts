@@ -63,6 +63,8 @@ export const en: UIStrings = {
     status: { 'in-progress': 'In progress', done: 'Done' },
     repo: 'Repository',
     demo: 'Demo',
+    document: 'Document',
+    downloadPdf: 'Download PDF',
     metrics: 'Metrics',
     back: 'All projects',
     date: 'Date',

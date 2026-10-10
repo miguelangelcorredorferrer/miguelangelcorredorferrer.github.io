@@ -61,6 +61,8 @@ export const es = {
     status: { 'in-progress': 'En curso', done: 'Terminado' },
     repo: 'Repositorio',
     demo: 'Demo',
+    document: 'Documento',
+    downloadPdf: 'Descargar PDF',
     metrics: 'Métricas',
     back: 'Todos los proyectos',
     date: 'Fecha',

@@ -20,3 +20,6 @@ Thumbs.db
 
 # informes locales
 lighthouse/
+
+# documentación local, no se publica
+README.md

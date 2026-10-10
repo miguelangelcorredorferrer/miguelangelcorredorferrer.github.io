@@ -6,7 +6,7 @@ import EntryHeader from '@/components/EntryHeader.astro';
 import Icon from '@/components/Icon.astro';
 import { formatDate, useTranslations, type Locale } from '@/i18n';
 import { detailPaths, type ProjectItem } from '@/lib/content';
-import { pagePath } from '@/lib/urls';
+import { pagePath, withBase } from '@/lib/urls';
 import '@/styles/prose.css';
 
 export const getStaticPaths = () => detailPaths('projects');
@@ -71,6 +71,16 @@ const display = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '');
           ))
         }
       </dl>
+      {
+        data.download && (
+          <p class="download">
+            <a class="btn btn-primary" href={withBase(data.download)} download>
+              <Icon name="download" size={16} />
+              {t.projects.downloadPdf}
+            </a>
+          </p>
+        )
+      }
     </EntryHeader>
 
     {
@@ -110,6 +120,10 @@ const display = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '');
 </BaseLayout>
 
 <style>
+  .download {
+    margin-block: var(--space-5) 0;
+  }
+
   .metrics dl {
     display: grid;
     gap: var(--space-3);

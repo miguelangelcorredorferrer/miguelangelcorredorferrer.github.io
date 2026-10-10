@@ -38,6 +38,11 @@ export const projectSchema = (image: ImageFunction) =>
       date: z.coerce.date(),
       repo: httpUrl.optional(),
       demo: httpUrl.optional(),
+      /** PDF descargable desde el post: ruta dentro de public/, p. ej. /docs/mi-proyecto.pdf */
+      download: z
+        .string()
+        .regex(/^\/.+\.pdf$/, 'Ruta dentro de public/ que empiece por "/" y acabe en .pdf')
+        .optional(),
       featured: z.boolean().default(false),
       cover: image().optional(),
       coverAlt: text.optional(),
